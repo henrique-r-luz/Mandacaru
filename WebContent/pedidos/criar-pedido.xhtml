@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form >
+		    <p:growl id="growl" closable="true" autoUpdate="true" />
+			<p:fieldset legend="Criar Pedido">
+				<center>
+					
+					<p:outputLabel value="Nome do pedido:" style="margin-right:5px"  />
+					<p:inputText styleClass="inputs"
+						value="#{pedidosControl.pedidos.nome}" required="true"
+						requiredMessage="O campo nome do pedido é necessário"  />
+					<p:commandButton value="Criar pedido" style="margin-left:5px;"
+						id="salvar" icon="ui-icon-disk"
+						actionListener="#{pedidosControl.salva}" update="@form" />
+
+				</center>
+			</p:fieldset>
+			<p:fieldset>
+
+				<p:dataTable var="item" value="#{pedidosControl.listaTodos}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+
+					</f:facet>
+
+					<p:column headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="Nome" headerText="Nome" filterBy="#{item.nome}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.nome}
+			</p:column>
+					
+					<p:column id="Pessoa" headerText="Pessoa"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.usuario.nome}
+			</p:column >
+			<p:column  id="statsu" headerText="status">
+			
+			#{item.statusPedidos.nome}
+			
+			</p:column>
+			
+
+					<p:column headerText="Opção" style="width:8%">
+
+						<p:commandButton
+							action="#{pedidosControl.criaLista(item.id)}"
+							immediate="true" ajax="false" id="alterar"
+							icon="ui-icon-document" title="Ver lista de itens">
+
+
+						</p:commandButton>
+						<p:commandButton
+							action="#{pedidosControl.orcamento(item.id)}"
+							immediate="true" ajax="false" id="preco" icon="ui-icon-cart"
+							title="Ver orçamento">
+
+						</p:commandButton>
+
+
+					</p:column>
+					
+				</p:dataTable>
+			</p:fieldset>
+			<br />
+			<br />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

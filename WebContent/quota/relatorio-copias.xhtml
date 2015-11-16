@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+
+
+
+
+		<p:fieldset legend="Relatorio Copias" toggleable="true"
+			toggleSpeed="500">
+			<p:panel  header="Filtro">
+				<h:form>
+					<h:panelGrid columns="9">
+						<p:outputLabel value="Servidor:" />
+						<p:selectOneMenu id="servidor" style="width:300px"
+							value="#{copiasControl.servidor}" effect="fade" filter="true"
+							converter="convertIservidor">
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{servidorControl.listaTodos}"
+								var="servidor" itemLabel="#{servidor.nome}"
+								itemValue="#{servidor}" />
+
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Impressora:" />
+						<p:selectOneMenu id="impressora" style="width:150px"
+							value="#{copiasControl.impressora}" effect="fade" filter="true"
+							converter="convertImpressorar">
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{impressoraControl.listaTodos}"
+								var="impressora" itemLabel="#{impressora.nome}"
+								itemValue="#{impressora}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Data Inicial:" style="" />
+						<p:calendar id="datai"
+							requiredMessage="O campo data  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{copiasControl.dataInicial}" styleClass="caledario" />
+						<p:outputLabel value="Data Final:" style="" />
+						<p:calendar id="dataf"
+							requiredMessage="O campo data  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{copiasControl.dataFinal}" styleClass="caledario" />
+						<p:commandButton value="Filtrar"
+							actionListener="#{copiasControl.filtrar}" update=":formCatmat" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:panel>
+
+			<br/>
+
+
+
+
+			<h:form id="formCatmat">
+				<p:growl id="growl" closable="true" />
+
+				<p:dataTable var="obj" value="#{copiasControl.filtraQuota}"
+					emptyMessage="não existe registros" paginator="true" rows="20">
+
+
+					<f:facet name="header">
+						<p:outputLabel style="font-size: 14px;  margin-right:80px;"
+							value="Total de impressões: #{copiasControl.filtraTotalCopias}    " />
+
+					</f:facet>
+					<p:column id="id" headerText="Id"
+						style="white-space:normal !important;  width: 20px;">
+				#{obj.id} 
+			</p:column>
+
+					<p:column headerText="Nome Documento" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 150px;">
+				#{obj.nomeDocumento} 
+			
+               </p:column>
+					<p:column headerText="Data" filterMatchMode="contains"
+						style="white-space:normal !important; ">
+
+						<h:outputText value="#{obj.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column id="Impressora" headerText="Impressora"
+						filterMatchMode="contains" style="white-space:normal !important; ">
+				#{obj.impressora.nome} 
+			
+               </p:column>
+
+					<p:column id="Servidor" headerText="Servidor"
+						filterMatchMode="contains"
+						style="white-space:normal !important;  width: 200px;">
+				#{obj.servidor.nome} 
+			
+               </p:column>
+
+					<p:column headerText="Número de Copias" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 35px; ">
+				#{obj.numeroCopias} 
+			
+               </p:column>
+               
+
+
+					<p:column headerText="Ação" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 120px; ">
+						<p:commandButton onclick="pop.show()" value="PDF" update=":doc">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{copiasControl.copias}" />
+						</p:commandButton>
+
+						<p:commandButton title="Abater Copias" onclick="popAbate.show()"
+							icon="ui-icon-circle-minus" update=":abate">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{statusCopiasControl.copias}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+
+				</p:dataTable>
+			</h:form>
+
+		</p:fieldset>
+
+
+<br/>
+
+		<h:form id="abatidos">
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Cópias Abatidas" toggleable="true"
+				toggleSpeed="500">
+
+
+				<p:dataTable var="obj" value="#{copiasControl.filtraAbatido}"
+					emptyMessage="não existe registros" paginator="true" rows="20">
+
+
+					<f:facet name="header">
+						<p:outputLabel style="font-size: 14px;  margin-right:80px;"
+							value="Total de impressões Abatidas: #{copiasControl.filtraTotalCopiasAbatido}    " />
+
+					</f:facet>
+					<p:column id="id" headerText="Id"
+						style="white-space:normal !important;">
+				
+				#{obj.id} 
+			</p:column>
+
+					<p:column headerText="Nome Documento" filterMatchMode="contains"
+						style="white-space:normal !important; ">
+				#{obj.nomeDocumento} 
+			
+               </p:column>
+					<p:column headerText="Data" filterMatchMode="contains"
+						style="white-space:normal !important; ">
+
+						<h:outputText value="#{obj.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column id="Impressora" headerText="Impressora"
+						filterMatchMode="contains" style="white-space:normal !important; ">
+				#{obj.impressora.nome} 
+			
+               </p:column>
+
+					<p:column id="Servidor" headerText="Servidor"
+						filterMatchMode="contains"
+						style="white-space:normal !important;  width: 200px;">
+				#{obj.servidor.nome} 
+			
+               </p:column>
+
+					<p:column headerText="Número de Copias" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 80px; ">
+				#{obj.numeroCopias} 
+			
+               </p:column>
+               
+               
+					<p:column headerText="Justificativa" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 35px; ">
+		
+		<h:outputText value="#{obj.statusCopias.justificativa}" escape="false" />
+			
+			
+               </p:column>
+
+
+					<p:column headerText="View" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 40px; ">
+						<p:commandButton onclick="pop.show()" value="PDF" update=":doc">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{copiasControl.copias}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+
+				</p:dataTable>
+
+
+			</p:fieldset>
+
+		</h:form>
+
+
+
+		<p:dialog id="modalDialog" height="600" modal="true"
+			appendToBody="true" header="Documento" width="80%" closable="true"
+			widgetVar="pop">
+
+
+			<h:form id="doc">
+
+
+				<object type="application/pdf"
+					data="#{config.urlBase}/#{config.docImpressao}/#{copiasControl.copias.urlDocumento}.pdf?pfdrid_c=true"
+					height="580" width="100%" />
+
+
+			</h:form>
+
+
+		</p:dialog>
+
+
+		<p:dialog  height="310" modal="true" appendToBody="true"
+			header="Abater Cópia" width="430" closable="true"
+			widgetVar="popAbate">
+
+            <p:ajax event="close" listener="#{statusCopiasControl.clear}"
+				update=":abate"  />
+			<h:form id="abate">
+
+              
+				<p:outputLabel value="Justificativa:" />
+				<p:editor value="#{statusCopiasControl.statusCopias.justificativa}"
+					id="editor" width="400" required="true"
+					requiredMessage="O campo justificativa é necessário" />
+				<p:separator />
+				<p:commandButton  action="#{statusCopiasControl.salvar}" value="Salvar" update=":abatidos,:formCatmat" oncomplete="popAbate.hide()"></p:commandButton>
+				<p:commandButton action="#{statusCopiasControl.clear}" value="Cancelar" onclick="popAbate.hide()"></p:commandButton>
+
+
+			</h:form>
+
+
+		</p:dialog>
+
+
+
+	</ui:define>
+
+
+</ui:composition>
+</html>

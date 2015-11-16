@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form>
+			
+			<p:fieldset>
+
+				<p:dataTable var="item" value="#{pedidosControl.listaPedidosfechados}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+                       
+							<p:outputPanel>
+								<h:outputText value="Lista de pedidos enviados"
+									style="font-size: 14px;" />
+							</p:outputPanel>
+				
+					</f:facet>
+
+					<p:column headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="Nome" headerText="Nome" filterBy="#{item.nome}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.nome}
+			</p:column>
+					<p:column id="descricao" headerText="Descrição"
+						filterBy="#{item.descricao}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.nome}
+			</p:column>
+					<p:column id="Pessoa" headerText="Pessoa"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.usuario.nome}
+			</p:column >
+			
+			
+
+					<p:column headerText="Opção" style="width:8%">
+
+						
+						<p:commandButton
+							action="#{pedidosControl.criaLista(item.id)}"
+							immediate="true" ajax="false" id="preco" icon="ui-icon-document"
+							title="Ver Itens">
+
+						</p:commandButton>
+
+
+					</p:column>
+					
+				</p:dataTable>
+			</p:fieldset>
+			<br />
+			<br />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

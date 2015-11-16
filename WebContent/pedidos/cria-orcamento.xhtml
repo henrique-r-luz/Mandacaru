@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hl="http://henrique.ifnmg.edu.br">
+
+
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/template.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/cadastro.css" />
+
+</h:head>
+
+<ui:composition template="../_main.xhtml">
+
+
+
+	<ui:define name="centro">
+
+		<h:form id="orcamento">
+			<p:growl id="growl" closable="true" />
+
+			<p:fieldset legend="Orçamento" toggleable="true" toggleSpeed="500">
+
+
+				<p:dataTable var="orcamentos"
+					value="#{orcamentoControl.listOrcamento}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Orçamento  #{orcamentoControl.pedidos.nome}"
+								style="font-size: 14px;" />
+						</p:outputPanel>
+					</f:facet>
+					<p:column headerText="Quatd." filterBy="#{orcamentos.quantidade}"
+						filterMatchMode="contains"
+						style="white-space:normal !important; width:35px;">
+				#{orcamentos.quantidade} 
+			</p:column>
+					<p:column headerText="Nome" filterBy="#{item.material.nome}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{orcamentos.item.material.nome} 
+			</p:column>
+					<p:column headerText="Catmat" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamentos.item.catmat.numero}
+			</p:column>
+
+					<p:column headerText="Categória" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamentos.item.categoria.nome}
+			</p:column>
+					<p:column headerText="Tipo Item" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamentos.item.tipo.nome}
+			</p:column>
+
+					<p:column headerText="Descrição"
+						style="white-space:normal !important;  width:40%;"
+						filterMatchMode="contains">
+						<h:outputText id="display"
+							value="#{orcamentos.item.material.descricao}" escape="false" />
+
+					</p:column>
+
+
+
+					<p:column headerText="Orcamento" style="width:8%">
+
+						<p:commandButton oncomplete="dlg3.show();" id="add"
+							icon="ui-icon-circle-plus" title="Adiciona Orcamento"
+							action="#{orcamentoControl.selectOrcamento(orcamentos)}"
+							update=":dialog">
+
+						</p:commandButton>
+
+					</p:column>
+					<p:column headerText="Status"
+						style="white-space:normal !important;  width:8%;"
+						filterMatchMode="contains">
+						<p:commandButton icon="#{orcamentoControl.cotacaoControl.vericaStatus(orcamentos.id)}" />
+
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="Voltar" onclick="dlg3.hide();"
+					action="#{orcamentoControl.voltaPagina}" id="voltar"
+					immediate="true" />
+				<p:commandButton value="Envia Pedido" update="growl"  action="#{orcamentoControl.enviaPedido}" />
+
+
+
+			</p:fieldset>
+
+		</h:form>
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Adiciona Cotação "  closable="true" widgetVar="dlg3"
+			width="800">
+			<p:ajax event="close" listener="#{orcamentoControl.limparPop}"
+				update="@this,:orcamento" immediate="false" />
+			<h:form id="dialog">
+
+				<p:growl id="messages" showDetail="true" />
+				<p:fieldset legend="Cotação #{orcamentoControl.orcamento.item.material.nome}" id="cotacao" toggleable="true"
+					toggleSpeed="500">
+					<h:panelGrid columns="6"
+						columnClasses="cotacaoColun1,cotacaoColun2,cotacaoColun3,cotacaoColun4,cotacaoColun5,cotacaoColun6">
+						<p:outputLabel value="Nome fornecedor:" />
+						<p:inputText required="true"
+							requiredMessage="O campo fornecedor  é obrigatorio"
+							value="#{orcamentoControl.cotacaoControl.cotacao.empresa}"
+							styleClass="inputCotacao" />
+						<p:outputLabel value="Valor Unitário:" />
+						<p:inputText required="true"
+							requiredMessage="O campo valor  é obrigatorio"
+							value="#{orcamentoControl.cotacaoControl.cotacao.valor}"
+							styleClass="inputQuant" />
+						<p:outputLabel value="Data:" />
+						<p:calendar required="true" id="data"
+							requiredMessage="O campo data  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{orcamentoControl.cotacaoControl.cotacao.data}"
+							styleClass="caledario" />
+						<p:outputLabel value="Site:" />
+						<p:inputText
+							value="#{orcamentoControl.cotacaoControl.cotacao.site}"
+							styleClass="inputCotacao" />
+						<p:outputLabel value="Email:" />
+						<p:inputText
+							value="#{orcamentoControl.cotacaoControl.cotacao.email}"
+							styleClass="inputEmail" />
+					</h:panelGrid>
+					<p:fileUpload fileUploadListener="#{orcamentoControl.doUpload}"
+						id="upload" required="true" update="panel" fileLimit="1"
+						widgetVar="fileupload" label="Selecionar" uploadLabel="Enviar"
+						cancelLabel="Cancelar" mode="advanced" style="margin-top: 5px;" />
+					<p:panel visible="#{orcamentoControl.visiblePanel}" id="panel">
+
+						<p:commandButton id="view" icon="ui-icon ui-icon-search" />
+						<p:commandLink immediate="true" ajax="false" id="label"
+							actionListener="#{orcamentoControl.verOrcamento}"
+							value="#{orcamentoControl.imagem}">
+							<p:fileDownload value="#{orcamentoControl.files}" />
+						</p:commandLink>
+
+						<p:commandButton actionListener="#{orcamentoControl.limpaImg}"
+							id="fecha" update="panel,upload" process="panel,upload"
+							icon="ui-icon ui-icon-closethick" />
+
+					</p:panel>
+					
+					
+						<p:commandButton value="Salvar" id="enviar"
+					action="#{orcamentoControl.salvaCotacao}" update="@form" />
+				<p:commandButton value="Cancela"
+					actionListener="#{orcamentoControl.clearPop}" immediate="true"
+					 id="cancela_pop" />
+
+				</p:fieldset>
+
+			
+
+
+
+
+				<p:dataTable var="item"
+					value="#{orcamentoControl.cotacaoControl.listaTodos}"
+					emptyMessage="não existe registros" selection="#{selected}"
+					paginator="true" rows="10"   styleClass="separacao_paineis">
+
+					<p:column id="fornecedor" headerText="Fornecedor"
+						filterBy="#{item.empresa}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.empresa} 
+			</p:column>
+					<p:column headerText="Valor Unit." filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.valor}
+			</p:column>
+
+					<p:column headerText="Data" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.data}
+			</p:column>
+					<p:column headerText="site" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.site}
+			</p:column>
+					<p:column headerText="Email"
+						style="white-space:normal !important; " filterMatchMode="contains">
+						<h:outputText id="display" value="#{item.email}" escape="false" />
+
+					</p:column>
+
+					<p:column headerText="Cotação"
+						style="white-space:normal !important;  width:10%;"
+						filterMatchMode="contains">
+
+						<p:lightBox styleClass="imagebox">
+							<h:outputLink value="#{item.url}" title="Orçamento">
+								<p:commandButton id="cotacao" icon="ui-icon-image" />
+
+							</h:outputLink>
+						</p:lightBox>
+					</p:column>
+
+
+
+				</p:dataTable>
+
+
+
+
+			</h:form>
+
+
+
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

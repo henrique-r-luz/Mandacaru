@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="form">
+			<p:fieldset legend="Cadastra Copias" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+
+
+						<p:outputLabel value="id Glpi:" />
+						<p:inputText value="#{docCopiasControl.copias.idGlpi}"
+							style="width:100px" required="true"
+							requiredMessage="O campo idGlpi é necessário">
+
+						</p:inputText>
+
+
+						<p:outputLabel value="Número de copias:" />
+						<p:inputText value="#{docCopiasControl.copias.numerodeCopias}"
+							styleClass="inputs" style="width:100px" required="true"
+							requiredMessage="O campo número de compias é necessário" />
+
+						<p:outputLabel value="Solicitante:" />
+						<p:selectOneMenu rendered="true" id="servidor" style="width:300px"
+							value="#{docCopiasControl.copias.servidor}" effect="fade"
+							required="true" filter="true" converter="convertIservidor">
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{servidorControl.listaTodos}"
+								var="servidor" itemLabel="#{servidor.nome}"
+								itemValue="#{servidor}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="data" />
+						<p:calendar required="true" id="data"
+							requiredMessage="O campo data  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{docCopiasControl.copias.data}" styleClass="caledario" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" action="#{docCopiasControl.salva}"
+						update="form,:tabela" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{docCopiasControl.clear}" update="form" />
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<br />
+
+		<p:fieldset legend="Pesquisa Copias" toggleable="true"
+			toggleSpeed="500">
+			<h:form id="tabela">
+
+				<p:panel header="Filtro">
+					<h:panelGrid columns="4">
+						<h:panelGroup style="margin-right: 10px">
+							<h:outputText value="Servidor: " />
+							<p:inputText maxlength="11"
+								value="#{docCopiasControl.nomeServidor}" style="width:300px">
+
+							</p:inputText>
+						</h:panelGroup>
+						<h:panelGroup style="margin-right: 10px">
+							<h:outputText value="Data Inicial: " />
+							<p:calendar id="dataInicial"
+								requiredMessage="O campo data Inicial  é obrigatorio"
+								pattern="dd/MM/yyyy" locale="pt_BR"
+								value="#{docCopiasControl.dataInicial}" styleClass="caledario" />
+
+
+
+						</h:panelGroup>
+						<h:panelGroup style="margin-right: 10px">
+							<h:outputText value="Data Final: " />
+							<p:calendar id="dataFinal"
+								requiredMessage="O campo data Final  é obrigatorio"
+								pattern="dd/MM/yyyy" locale="pt_BR"
+								value="#{docCopiasControl.dataFinal}" styleClass="caledario" />
+
+						</h:panelGroup>
+						<p:commandButton value="Pesquisa"
+							actionListener="#{docCopiasControl.verificaData}"
+							update="lista,dataInicial,dataFinal,:form:growl" />
+					</h:panelGrid>
+				</p:panel>
+				<br />
+				<p:dataTable id="lista" var="copias"
+					value="#{docCopiasControl.listaTodos}"
+					emptyMessage="não existe registros" paginator="true" rows="10">
+
+
+					<p:column headerText="idGlpi"
+						style="white-space:normal !important; width:80px;">
+				#{copias.idGlpi} 
+			</p:column>
+
+
+
+
+					<p:column headerText="Número de copias"
+						style="white-space:normal !important; width:80px;">
+				#{copias.numerodeCopias} 
+			</p:column>
+
+
+					<p:column headerText="Solicitante"
+						style="white-space:normal !important; width:80px;">
+				#{copias.servidor.nome} 
+			</p:column>
+
+
+					<p:column headerText="Cotação"
+						style="white-space:normal !important; width:80px;">
+				#{copias.cotacao.valor} R$
+			</p:column>
+
+					<p:column headerText="Data"
+						style="white-space:normal !important; width:80px;">
+						<h:outputText value="#{copias.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="opcoes" headerText="Opçoes" style="width:5%">
+						<p:commandButton update=":dialog" oncomplete="PF('dlg2').show()"
+							icon="ui-icon-pencil" title="Editar">
+							<f:setPropertyActionListener value="#{copias}"
+								target="#{docCopiasControl.copias}" />
+						</p:commandButton>
+
+					</p:column>
+
+					<f:facet name="footer">
+						<h:outputText
+							value="Total de copias: #{docCopiasControl.contaCopias.total}  "
+							style="font-size: 14px;  margin-right:15px;" />
+						<h:outputText
+							value="Valor Total: #{docCopiasControl.contaCopias.valor} "
+							style="font-size: 14px; margin-right:500px;" />
+						
+
+							<p:commandButton  id="cbtGerarRelatorio" value="Solicitante" icon="ui-icon-print" action="#{docCopiasControl.impressao}"
+                                      ajax="false" style="margin-right:15px;" >
+                       
+                           </p:commandButton>
+                           
+                           
+                           <p:commandButton   value="Mensal" icon="ui-icon-print" action="#{docCopiasControl.impressaoMes}"
+                                      ajax="false" >
+                       
+                           </p:commandButton>
+
+					</f:facet>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
+
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlg2" width="800">
+			<h:form id="dialog">
+
+				<h:panelGrid columns="2">
+
+
+
+					<p:outputLabel value="Número de copias:" />
+					<p:inputText value="#{docCopiasControl.copias.numerodeCopias}"
+						styleClass="inputs" style="width:100px" required="true"
+						requiredMessage="O campo número de compias é necessário" />
+
+					<p:outputLabel value="Solicitante:" />
+					<p:selectOneMenu rendered="true" id="servidor" style="width:300px"
+						value="#{docCopiasControl.copias.servidor}" effect="fade"
+						required="true" converter="convertIservidor">
+						<f:selectItem itemLabel="selecione um" itemValue="" />
+						<f:selectItems value="#{servidorControl.listaTodos}"
+							var="servidor" itemLabel="#{servidor.nome}"
+							itemValue="#{servidor}" />
+
+					</p:selectOneMenu>
+					<p:outputLabel value="data" />
+					<p:calendar required="true" id="data"
+						requiredMessage="O campo data  é obrigatorio" pattern="dd/MM/yyyy"
+						locale="pt_BR" value="#{docCopiasControl.copias.data}"
+						styleClass="caledario" />
+				</h:panelGrid>
+				<p:separator />
+				<p:commandButton value="Salvar" action="#{docCopiasControl.altera}"
+					update=":tabela, dialog,:form:growl" oncomplete="PF('dlg2').hide()"
+					icon="ui-icon-disk" />
+
+
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog id="relatorio" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlg" width="800">
+			<h:form id="formRelatorio">
+
+				<f:subview>
+
+				</f:subview>
+
+			</h:form>
+		</p:dialog>
+	</ui:define>
+
+
+
+
+</ui:composition>
+</html>

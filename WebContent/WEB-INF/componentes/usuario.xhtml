@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+
+	<h:panelGrid columns="2">
+
+		<p:outputLabel value="Login:" />
+		<p:inputText value="#{usuarioControl.usuario.login}"
+			styleClass="inputs" required="true"
+			requiredMessage="O login é necessário" />
+
+		<p:outputLabel value="Grupo:" />
+		<p:selectOneMenu id="grupo" value="#{usuarioControl.usuario.grupo}"
+			effect="fade" filter="true" converter="convertGrupo" required="true"
+			requiredMessage="O grupo é necessário">
+			<f:selectItem itemLabel="selecione um" itemValue="" />
+			<f:selectItems value="#{grupoControl.listaTodos}" var="item"
+				itemLabel="#{item.nome}" itemValue="#{item}" />
+		</p:selectOneMenu>
+		<p:outputLabel value="Ldap:" />
+		<p:selectBooleanCheckbox id="chek" listener="#{usuarioControl.abiltaLdap}" value="#{usuarioControl.usuario.ldap}"  immediate="true">
+							<p:ajax event="change" update="senha1,senha2"
+								listener="#{usuarioControl.abiltaLdap}"  process="@this" />
+						</p:selectBooleanCheckbox>
+		<p:outputLabel value="Senha:"   />
+		<p:password id="senha1"  autocomplete="off" disabled="#{usuarioControl.usuario.ldap}" value="#{usuarioControl.usuario.senha}"
+			styleClass="inputs" required="true"
+			requiredMessage="A senha é necessário" />
+		<p:outputLabel value="Comfirmar senha:" />
+		<p:password id="senha2" autocomplete="off" disabled="#{usuarioControl.usuario.ldap}" value="#{usuarioControl.comfirmarSenha}"
+			styleClass="inputs" required="true"
+			requiredMessage="A confirmação senha é necessário" />
+	</h:panelGrid>
+	<p:separator />
+
+
+
+</ui:component>
+</html>

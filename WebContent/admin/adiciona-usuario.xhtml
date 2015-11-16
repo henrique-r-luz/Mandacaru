@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="../_main.xhtml"   >
+	<ui:define name="centro"  >
+		<h:body onload="loadFieldsUser()">
+			<h:form id="formCatmat" autocomplete="off">
+				<p:fieldset legend="Cadastra usuário" toggleable="true" id="painel"
+					toggleSpeed="500">
+					<center>
+						<p:growl id="growl" closable="true" />
+						<h:panelGrid columns="2" style="margin-left: -108px; ">
+							<p:outputLabel value="Servidor:" style="margin-right:50px;" />
+							<p:selectOneMenu id="servidor" style="width:300px"
+								value="#{usuarioControl.usuario.servidor}" effect="fade"
+								required="true" filter="true" converter="convertIservidor">
+								<f:selectItem itemLabel="selecione um" itemValue="" />
+								<f:selectItems value="#{servidorControl.listaTodosSemUsuario}"
+									var="servidor" itemLabel="#{servidor.nome}"
+									itemValue="#{servidor}" />
+							</p:selectOneMenu>
+							<p:outputLabel value="Grupo Impressão:" />
+							<p:selectOneMenu rendered="true" style="width:156px"
+								value="#{usuarioControl.grupoImpressao}" effect="fade"
+								required="true" filter="true" converter="convertGrupoImpressao">
+								<f:selectItem itemLabel="selecione um" itemValue="" />
+								<f:selectItems value="#{grupoImpressaoControl.listaTodos}"
+									var="gi" itemLabel="#{gi.nome}" itemValue="#{gi}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<hl:usuario />
+
+
+						<p:commandButton value="Salvar" update="formCatmat,:formTabela"
+							id="salvar" actionListener="#{usuarioControl.salva}"
+							icon="ui-icon-disk" />
+						<p:commandButton value="Cancelar" id="cancelar"
+							icon="ui-icon-arrowreturnthick-1-w"
+							actionListener="#{usuarioControl.clear}" ajax="true"
+							immediate="true" type="reset" update="formCatmat" />
+					</center>
+				</p:fieldset>
+			</h:form>
+			<br />
+			<br />
+
+			<h:form id="formTabela">
+				<p:fieldset legend="Pesquisa Usuário" toggleable="true"
+					toggleSpeed="500">
+
+					<p:panel header="Filtro">
+						<h:panelGrid columns="3">
+							<h:panelGroup style="margin-right: 10px">
+								<h:outputText value="Login: " />
+								<p:inputText value="#{usuarioControl.login}" style="width:300px">
+									<p:ajax event="keyup" update="tabela" />
+								</p:inputText>
+							</h:panelGroup>
+							<h:panelGroup style="margin-right: 10px">
+								<h:outputText value="Nome: " />
+								<p:inputText value="#{usuarioControl.nome}" style="width:300px">
+									<p:ajax event="keyup" update="tabela" />
+								</p:inputText>
+							</h:panelGroup>
+						</h:panelGrid>
+					</p:panel>
+				</p:fieldset>
+				<p:fieldset legend="Pesquisa usuário" toggleable="true"
+					toggleSpeed="500">
+
+					<p:dataTable var="item" id="tabela"
+						value="#{usuarioControl.listaTodos}"
+						emptyMessage="não existe registros" paginator="true" rows="10">
+
+
+
+
+						<p:column id="id" headerText="id"
+							style="white-space:normal !important; width:15px;">
+				#{item.id}
+			</p:column>
+
+
+
+						<p:column headerText="Login"
+							style="white-space:normal !important;">
+				#{item.login}
+			</p:column>
+						<p:column headerText="Grupo"
+							style="white-space:normal !important;">
+				#{item.grupo.nome}
+			</p:column>
+						<p:column headerText="Servidor"
+							style="white-space:normal !important;">
+				#{item.servidor.nome}
+			</p:column>
+						<p:column headerText="Grupo Impressão"
+							style="white-space:normal !important;">
+				#{item.servidor.grupoImpressao.nome}
+			</p:column>
+						<p:column style="width:30px;" headerText="Ativado">
+
+							<p:selectBooleanCheckbox value="#{item.status.status}">
+								<p:ajax update="tabela"
+									listener="#{usuarioControl.mudaStatus(item)}" />
+							</p:selectBooleanCheckbox>
+						</p:column>
+
+						<p:column style="width:30px;" headerText="Ldap">
+                      #{item.ldap}
+						
+					</p:column>
+
+
+						<p:column headerText="Opção" style="width:80px;">
+
+							<p:commandButton icon="ui-icon-pencil" title="Altera Usuario"
+								update=":dialog" listener="#{usuarioControl.abiltaLdap}"
+								oncomplete="PF('pop').show()">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{usuarioControl.usuario}" />
+							</p:commandButton>
+
+							<p:commandButton icon="ui-icon-trash" title="Exclui Usuario"
+								update=":dialog" oncomplete="PF('popExcluir').show()">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{usuarioControl.usuario}" />
+							</p:commandButton>
+
+						</p:column>
+
+
+					</p:dataTable>
+
+
+
+				</p:fieldset>
+			</h:form>
+
+
+
+			<p:dialog id="modalDialog" modal="true" appendToBody="true"
+				header="Altera Usuario" closable="true" widgetVar="pop" width="800">
+
+
+
+				<h:form id="dialog">
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Servidor:" style="margin-right: 50px;" />
+						<p:selectOneMenu rendered="true" id="servidor" style="width:300px"
+							value="#{usuarioControl.usuario.servidor}" effect="fade"
+							required="true" filter="true" converter="convertIservidor">
+							<f:selectItem itemLabel="#{usuarioControl.usuario.servidor.nome}"
+								itemValue="#{usuarioControl.usuario.servidor}" />
+
+							<f:selectItems value="#{servidorControl.listaTodosSemUsuario}"
+								var="servidor" itemLabel="#{servidor.nome}"
+								itemValue="#{servidor}" />
+						</p:selectOneMenu>
+						<p:outputLabel value="Grupo Impressão:" />
+						<p:selectOneMenu rendered="true" style="width:156px"
+							value="#{usuarioControl.grupoImpressao}" effect="fade"
+							required="true" filter="true" converter="convertGrupoImpressao">
+							<f:selectItem
+								itemLabel="#{usuarioControl.usuario.servidor.grupoImpressao.nome}"
+								itemValue="#{usuarioControl.usuario.servidor.grupoImpressao}" />
+							<f:selectItems value="#{grupoImpressaoControl.listaTodos}"
+								var="gi" itemLabel="#{gi.nome}" itemValue="#{gi}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+					<hl:usuario />
+
+					<p:commandButton value="Salvar"
+						update=":formTabela,:formCatmat:growl,dialog"
+						actionListener="#{usuarioControl.altera}"
+						oncomplete="PF('pop').hide()" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" update="dialog"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{usuarioControl.clear}" />
+				</h:form>
+
+
+
+			</p:dialog>
+
+
+			<p:dialog id="popExcluir" modal="true" appendToBody="true"
+				header="Altera Usuario" closable="true" widgetVar="popExcluir"
+				width="250">
+
+
+
+				<h:form id="excluir">
+					<center>
+						<p:outputLabel value="Você deseja realmente excluir o usuário?" />
+						<br /> <br />
+						<p:commandButton value="Sim" action="#{usuarioControl.excluir}"
+							oncomplete="PF('popExcluir').hide()" update=":formTabela" />
+						<p:commandButton value="Não" onclick="PF('popExcluir').hide()" />
+					</center>
+				</h:form>
+
+
+
+			</p:dialog>
+		</h:body>
+	</ui:define>
+
+
+</ui:composition>
+</html>

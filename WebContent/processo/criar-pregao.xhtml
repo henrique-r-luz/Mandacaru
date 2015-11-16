@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formPregao">
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Criar Pregão">
+				<center>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Número do Pregão:" style="margin-right:5px" />
+						<p:inputText styleClass="inputs" required="true" 
+							value="#{pregaoControl.pregao.numero}" maxlength="40"
+							rendered="true"  />
+						<p:outputLabel value="Data do Pregão:" style="margin-right:5px" />
+						<p:calendar required="true" id="data"
+							requiredMessage="O campo data  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{pregaoControl.pregao.data}"
+							styleClass="caledario" />
+
+						<p:outputLabel value="Inserir Processo:" style="margin-right:5px" />
+						<h:panelGroup>
+							<p:inputText value="#{pregaoControl.processo.numero}" id="valorProcesso" disabled="true"
+								maxlength="6" style="width:200px;"  />
+							<p:commandButton onclick="dlg2.show();" id="addCatmat"
+								icon="ui-icon ui-icon-search" type="button" />
+						</h:panelGroup>
+						<p:outputLabel value="Informações sobre o Pregão:" />
+						<p:editor id="editor" required="true"
+							value="#{pregaoControl.pregao.descricao}" rendered="true"
+							width="400" />
+						<p:commandButton value="Salvar" style="margin-left:5px;"
+							id="salvar" icon="ui-icon-disk" action="#{pregaoControl.salvaPregao}"
+							update="formPregao" />
+					</h:panelGrid>
+
+				</center>
+			</p:fieldset>
+
+			<p:fieldset>
+				<p:dataTable var="item" value="#{pregaoControl.listaTodos}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+
+					</f:facet>
+
+					<p:column headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="numeroPregao" headerText="Número do pregão" filterBy="#{item.numero}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+			           #{item.numero}
+			</p:column>
+			<p:column id="numeroProcesso" headerText="Número do processo" filterBy="#{item.numero}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+			          <h:outputText  value="#{item.viewProcesso}" escape="false" />
+			</p:column>
+			<p:column id="data" headerText="Data"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+		               #{item.data}
+			</p:column>
+
+					<p:column id="descricao" headerText="Descrição"
+						filterBy="#{item.descricao}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+						<h:outputText id="display" value="#{item.descricao}"
+							escape="false" />
+
+					</p:column>
+					<p:column id="Pessoa" headerText="Pessoa"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+			             #{item.usuario.nome}
+			</p:column>
+			
+			<p:column id="status" headerText="Status"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+			            #{item.statusPedidos.nome}
+			</p:column>
+
+					<p:column headerText="Opção" style="width:8%">
+
+						<p:commandButton
+							action="#{pregaoControl.criaListaPergao(item.id)}"
+							immediate="true" ajax="false" id="alterar"
+							icon="ui-icon-document" title="Ver lista de itens">
+
+
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+		
+		
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlg2" width="800">
+			<h:form id="dialog">
+				<p:growl id="growl2" closable="true" />
+				<p:dataTable var="item" value="#{processoControl.listaProcessoFechados}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+                         
+					</f:facet>
+
+					<p:column headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="nume" headerText="Número" filterBy="#{item.numero}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.numero}
+				
+			</p:column>
+
+					<p:column id="descricao" headerText="Descrição"
+						filterBy="#{item.descricao}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+						<h:outputText id="display" value="#{item.descricao}"
+							escape="false" />
+
+					</p:column>
+					<p:column id="Pessoa" headerText="Pessoa"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.usuario.nome}
+			</p:column>
+					<p:column id="Status" headerText="status"
+						filterBy="#{item.statusPedidos.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.statusPedidos.nome}
+			</p:column>
+
+					<p:column headerText="Opção" style="width:8%">
+
+						<p:commandButton oncomplete="dlg2.hide()"  update=":formPregao:valorProcesso" id="alterar"
+							icon="ui-icon ui-icon-search" title="Adiciona Processo">
+
+                           <f:setPropertyActionListener value="#{item}"
+									target="#{pregaoControl.processo}" />
+
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

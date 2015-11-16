@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="compras" transaction-type="RESOURCE_LOCAL">
+
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<class>model.Ccategoria</class>
+		<class>model.Ccatmat</class>
+		<class>model.Citem</class>
+		<class>model.Ctipo</class>
+		<class>model.CinfoMaterial</class>
+		<class>model.CtipoCatMat</class>
+		<class>model.Cpedidos</class>
+		<class>model.Cusuario</class>
+		<class>model.CusuarioStatus</class>
+		<class>model.Cgrupo</class>
+		<class>model.Cstatus</class>
+		<class>model.Corcamento</class>
+		<class>model.Ccotacao</class>
+		<class>model.Cprocesso</class>
+		<class>model.CstatusItem</class>
+		<class>model.CstatusPedidos</class>
+		<class>model.CitemProcesso</class>
+		<class>model.Cpregao</class>
+		<class>model.Cfracassados</class>
+		<class>model.CinfoMaterialGenerico</class>
+		<class>model.impressao.Iservidor</class>
+		<class>model.impressao.IdocCopias</class>
+		<class>model.impressao.IcotacaoCopias</class>
+		
+		<class>model.quota.QcopiasRealizadas</class>
+		<class>model.quota.QgrupoImpressao</class>
+		<class>model.quota.Qimpressora</class>
+		<class>model.ConfigModel</class>
+        <class>model.quota.QstatusCopias</class>
+          <class>model.quota.Ldap</class>
+
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/compras2?autoReconnect=true" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="" />
+           
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.connection.provider_class"
+				value="org.hibernate.connection.C3P0ConnectionProvider" />
+
+			<property name="hibernate.c3p0.max_size" value="100" />
+			<property name="hibernate.c3p0.min_size" value="3" />
+			<property name="hibernate.c3p0.acquire_increment" value="5" />
+			<property name="hibernate.c3p0.idle_test_period" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="0" />
+			<property name="hibernate.c3p0.timeout" value="900" />
+		</properties>
+	
+	</persistence-unit>
+
+</persistence>

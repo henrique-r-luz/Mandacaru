@@ -1,0 +1,8 @@
+@CHARSET "ISO-8859-1";
+.ff{
+	margin-right: 5px;
+	width: 200px;
+	position: relative;
+	float: left;
+	font-size: 14px;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hl="http://henrique.ifnmg.edu.br">
+
+
+<ui:composition template="_main.xhtml">
+	<ui:define name="centro">
+		<p:fieldset legend="Lista de pedidos dos Coordenadores"
+			toggleable="true" toggleSpeed="500">
+			<h:form>
+				<hl:tabelaAddItem lista="#{controla.itemDataModel}">
+					<ui:define name="inicio">
+
+						<p:column selectionMode="multiple" style="width:2%" />
+						<p:column headerText="Quantidade">
+							<h:outputLabel value="50" />
+						</p:column>
+						<p:column id="Numero" headerText="Número do pedido"
+							filterBy="#{item.nome}" filterMatchMode="contains"
+							style="white-space:normal !important;">
+				13
+			</p:column>
+					</ui:define>
+					<ui:define name="final">
+						<p:column headerText="Coordenação/Núcleo"
+							filterMatchMode="contains" style="white-space:normal !important;">
+				Núcleo de tecnologia da Informação
+			</p:column>
+						<p:column headerText="Coordenador" filterMatchMode="contains"
+							style="white-space:normal !important;">
+				Henrique Luz
+			</p:column>
+
+						<f:facet name="footer">
+							<p:commandButton style="" value="Adiciona a Lista"
+								icon="ui-icon-search" action="#{controla.imprime}" />
+						</f:facet>
+					</ui:define>
+				</hl:tabelaAddItem>
+			</h:form>
+		</p:fieldset>
+		<br />
+		<br />
+		<p:fieldset legend="Lista de Itens do Processo" toggleable="true"
+			toggleSpeed="500">
+			<h:form id="processo">
+				<hl:tabelaAddItem lista="#{controla.itemDataModel}">
+					<ui:define name="inicio">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Número do processo: 120012384"
+									style="font-size: 14px;" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column selectionMode="multiple" style="width:2%" />
+						<p:column headerText="Quantidade">
+							<h:outputLabel value="50" />
+						</p:column>
+					</ui:define>
+					<ui:define name="final">
+						<p:column headerText="Coordenação/Núcleo"
+							filterMatchMode="contains" style="white-space:normal !important;">
+			     Núcleo de tecnologia da Informação
+			</p:column>
+						<p:column headerText="Coordenador" filterMatchMode="contains"
+							style="white-space:normal !important;">
+				Henrique Luz
+			</p:column>
+
+						<f:facet name="footer">
+							<p:commandButton value="Inserir itens no processo"
+								icon="ui-icon-search" action="#{controla.salvaLista}"
+								update="@form" />
+							<p:commandButton style="" value="Remover Itens"
+								icon="ui-icon-search" action="#{controla.imprime}" />
+						</f:facet>
+					</ui:define>
+				</hl:tabelaAddItem>
+			</h:form>
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
+</html>

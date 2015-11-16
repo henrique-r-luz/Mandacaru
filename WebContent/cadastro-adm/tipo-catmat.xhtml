@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra tipo do catmat" toggleable="true"
+				id="painel" toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Nome:" />
+						<p:inputText value="#{tipoCatMatControl.tipocatmat.nome}"
+							styleClass="inputs" required="true"
+							requiredMessage="O campo nome é necessário" />
+						<p:outputLabel value="Sigla:" />
+						<p:inputText value="#{tipoCatMatControl.tipocatmat.sigla}"
+							styleClass="inputs" required="true"
+							requiredMessage="O campo sigla é necessário" />
+
+					</h:panelGrid>
+					<p:separator />
+					
+				</center>
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Pesquisa Tipo do Item" toggleable="true"
+				toggleSpeed="500">
+
+				<p:dataTable var="item" value="#{tipoCatMatControl.listaTodos}"
+					emptyMessage="não existe registros" selection="#{selected}"
+					paginator="true" rows="10">
+					<f:facet name="header">
+
+					</f:facet>
+
+					<p:column id="id" headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" width="20%"
+						style="white-space:normal !important;">
+				#{item.id} 
+			</p:column>
+					<p:column headerText="Nome" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.nome}
+			</p:column>
+					<p:column headerText="Sigla" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.sigla}
+			</p:column>
+
+				</p:dataTable>
+
+
+
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

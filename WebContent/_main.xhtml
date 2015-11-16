@@ -1,0 +1,134 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/template.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/cadastro.css" />
+
+<script type="text/javascript" 
+  	src="#{facesContext.externalContext.requestContextPath}/js/common.js?ln=js">
+</script>
+
+</h:head>
+<h:body>
+
+	<p:layout  fullPage="true">
+		<p:layoutUnit position="north"  height="90">
+			<p:graphicImage url="/img/mandacaru5.png" style="margin-left:15px;" />
+			<h:panelGrid columns="3"
+				style="top:60% ;right:0.5%; position:absolute; font-weight: bold;">
+				<h:outputText value="#{usuarioControl.secao} | " />
+				<a
+					href="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">logout</a>
+				<p:commandLink value=" | Help" />
+			</h:panelGrid>
+		</p:layoutUnit>
+		<p:layoutUnit position="west" resizable="true">
+
+
+			<h:form id="formMenu">
+
+				<p:panelMenu style="width:150px">
+
+					<p:submenu
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+						label="Admin">
+						<p:menuitem value="Usuário"
+							action="/admin/adiciona-usuario.xhtml?faces-redirect=true"
+							icon="ui-icon-disk"   />
+						<p:menuitem value="Grupo usuário"
+							action="/admin/adiciona-grupo.xhtml?faces-redirect=true"
+							icon="ui-icon-disk"  />
+						<p:menuitem value="Configuração"
+							action="/admin/config.xhtml" icon="ui-icon-disk"   />
+						<p:menuitem value="Ldap" action="/admin/ldap.xhtml?faces-redirect=true"
+							icon="ui-icon-disk"   />
+					</p:submenu>
+
+
+					<p:submenu
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMIN') || facesContext.externalContext.isUserInRole('ROLE_QUOTA') || facesContext.externalContext.isUserInRole('ROLE_QUOTA_CLIENTE') }"
+						label="Quota">
+						<p:menuitem value="Imprimir"
+							action="/quota-cliente/quota?faces-redirect=true"
+							icon="ui-icon-disk"  />
+						<p:menuitem
+							rendered="#{facesContext.externalContext.isUserInRole('ROLE_QUOTA') || facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+							value="Cadastro Impressora"
+							action="/quota/impressora-quota?faces-redirect=true"
+							icon="ui-icon-disk" />
+						<p:menuitem
+							rendered="#{facesContext.externalContext.isUserInRole('ROLE_QUOTA') || facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+							value="Grupo Impressão"
+							action="/quota/grupo-impressao?faces-redirect=true"
+							icon="ui-icon-disk" />
+						<p:menuitem
+							rendered="#{facesContext.externalContext.isUserInRole('ROLE_QUOTA') || facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+							value="Relatorio Copias"
+							action="/quota/relatorio-copias?faces-redirect=true"
+							icon="ui-icon-disk" />
+						<p:menuitem value="Cadastra Servidor"
+							rendered="#{facesContext.externalContext.isUserInRole('ROLE_QUOTA') || facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+							action="/pessoa/adiciona-servidor?faces-redirect=true"
+							icon="ui-icon-disk" />
+					</p:submenu>
+					<p:submenu
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMINNOT') }"
+						label="Impressão e Copia">
+						<p:menuitem value="Cadastra Servidor"
+							action="/pessoa/adiciona-servidor?faces-redirect=true"
+							icon="ui-icon-disk" />
+						<p:menuitem value="Cadastra Copias"
+							action="/impressao/adiciona-copias?faces-redirect=true"
+							icon="ui-icon-disk" />
+						<p:menuitem value="Cadastra Cotação"
+							action="/impressao/cotacao-copias?faces-redirect=true"
+							icon="ui-icon-disk" />
+					</p:submenu>
+
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+      
+		<p:layoutUnit position="center" style="width: 90%"
+			resizable="true"  >
+			
+          <h:panelGroup id="centro" layout="center">
+			<ui:insert name="centro">
+
+			</ui:insert>
+
+         </h:panelGroup>
+        
+		</p:layoutUnit>
+     
+
+	</p:layout>
+
+
+	<p:idleMonitor timeout="150000000"
+		onidle="window.location ='#{facesContext.externalContext.requestContextPath}/j_spring_security_logout'" />
+
+
+
+
+	<p:ajaxStatus onstart="PF('status2').show()"
+		oncomplete="PF('status2').hide()" />
+	<p:dialog widgetVar="status2" modal="true" closable="false">
+     Processando...  <h:graphicImage
+			value="#{config.urlBase}/img/ajax-loader.gif" />
+	</p:dialog>
+
+
+</h:body>
+</html>

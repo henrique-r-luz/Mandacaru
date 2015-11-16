@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+
+	<h:panelGrid columns="2">
+		<p:outputLabel value="Nome:" />
+		<p:inputText styleClass="inputs" required="true"
+			value="#{impressoraControl.impressora.nome}"
+			requiredMessage="O Nome é necessário" />
+		<p:outputLabel value="IP da impressora:" />
+		<p:inputText styleClass="inputs" required="true"
+			value="#{impressoraControl.impressora.ip}"
+			requiredMessage="O IP é necessário" />
+		<p:outputLabel value="Descrição:" />
+		<p:editor value="#{impressoraControl.impressora.descricao}"
+			id="editor" width="400" required="true"
+			requiredMessage="O campo descrição é necessário" />
+	</h:panelGrid>
+	<p:separator />
+
+
+</ui:component>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_main.xhtml">
+	<ui:define name="centro">
+	<h:form>
+		<p:fieldset legend="Item Pedidos" toggleable="true" toggleSpeed="500">
+			
+				<hl:tabelaAddItem lista="#{controla.vetItem}">
+					<ui:define name="inicio">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Ststus do Pedido: Aberto"
+									style="font-size: 14px;" />
+							</p:outputPanel>
+						</f:facet>
+					</ui:define>
+					<ui:define name="final">
+						<p:column style="width:8%">
+							<p:commandLink value="status" onclick="dlg2.show()"
+								immediate="true" />
+						</p:column>
+					</ui:define>
+				</hl:tabelaAddItem>
+
+				
+			
+		</p:fieldset>
+		<p:dialog id="modalDialog" header="Modal Dialog" modal="true" appendToBody="true" widgetVar="dlg2">
+					<h:outputText value="This is a Modal Dialog." />
+				</p:dialog>
+		
+       </h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

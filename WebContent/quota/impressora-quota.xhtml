@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastro de impressora" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<hl:impressora />
+					<p:commandButton value="Salvar" action="#{impressoraControl.salvar}"  update="formCatmat,:tabela" id="salvar"
+						 icon="ui-icon-disk" />
+						 <p:commandButton value="Cancelar" action="#{impressoraControl.clear}" update="formCatmat" 
+						 icon="ui-icon-disk" />
+					
+				</center>
+			</p:fieldset>
+			<br />
+			<br />
+			</h:form>
+			<h:form id="tabela">
+			<p:fieldset legend="Pesquisa Impressora" toggleable="true"
+				toggleSpeed="500">
+                
+                
+				<p:dataTable var="obj" value="#{impressoraControl.listaTodos}"
+					emptyMessage="não existe registros" >
+
+					<f:facet name="header">
+
+					</f:facet>
+                     
+                     <p:column id="id" headerText="Id"
+						filterBy="#{item.id}" filterMatchMode="contains"
+						style="white-space:normal !important; width:80px;">
+				#{obj.id} 
+			</p:column>
+                     
+					<p:column id="nome" headerText="Nome"
+						 filterMatchMode="contains"
+						style="white-space:normal !important; width:80px;">
+				#{obj.nome} 
+			
+               </p:column>
+					
+					
+					<p:column  headerText="IP"
+						 filterMatchMode="contains"
+						style="white-space:normal !important; width:80px;">
+				#{obj.ip} 
+			
+               </p:column>
+					
+					<p:column headerText="descricao"
+						style="white-space:normal !important;  width:40%;"
+						filterMatchMode="contains">
+						<h:outputText id="display"
+							value="#{obj.descricao}" escape="false" />
+
+					</p:column>
+					
+					
+					<p:column headerText="Opção" style="width:50px;">
+
+						<p:commandButton   icon="ui-icon-pencil"
+							title="altera Impressora"  update=":dialog" oncomplete="PF('pop').show()" >
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{impressoraControl.impressora}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+
+			</p:fieldset>
+			</h:form>
+			
+		<p:dialog  id="modalDialog" modal="true" appendToBody="true"
+			header="Altera Usuario" closable="true" widgetVar="pop" width="500">
+              
+              
+             
+			<h:form id="dialog">
+			     <p:growl id="growl" closable="true" />
+				<hl:impressora />
+
+				<p:commandButton value="Salvar" update=":tabela"
+					actionListener="#{impressoraControl.altera}" oncomplete="PF('pop').hide()"  icon="ui-icon-disk" />
+				<p:commandButton value="Cancelar"  update="dialog"
+					icon="ui-icon-arrowreturnthick-1-w"
+					actionListener="#{impressoraControl.clear}" />
+			</h:form>
+
+
+
+		</p:dialog>
+	</ui:define>
+
+
+</ui:composition>
+</html>

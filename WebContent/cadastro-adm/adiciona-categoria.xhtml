@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra categória do Item" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Nome:" />
+						<p:inputText value="#{categoriaControl.categoria.nome}" styleClass="inputs"
+							required="true" requiredMessage="O campo nome é necessário" />
+
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" update="formCatmat" id="salvar"
+						actionListener="#{categoriaControl.salva}" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{categoriaControl.clear}" update="formCatmat" />
+				</center>
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Pesquisa categória do Item" toggleable="true"
+				toggleSpeed="500">
+
+				<hl:tabelaUnico lista="#{categoriaControl.listaTodos}">
+					<ui:define name="final">
+						<p:column headerText="Opção" style="width:8%">
+							<p:commandButton id="excluir" icon="ui-icon-trash" title="View">
+
+							</p:commandButton>
+							<p:commandButton id="alterar" icon="ui-icon-document"
+								title="View">
+
+							</p:commandButton>
+
+						</p:column>
+					</ui:define>
+
+
+				</hl:tabelaUnico>
+
+
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

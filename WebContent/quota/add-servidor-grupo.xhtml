@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+<ui:composition  template="../_main.xhtml">
+
+	<ui:define name="centro">
+		<h:outputScript  target="body">
+		var resp = #{adicionaServidorGrupo.resp} 
+		if(resp=="1"){
+		location.href="#{facesContext.externalContext.requestContextPath}/quota/grupo-impressao.jsf"
+	    	//alert("ola");
+	    }
+		
+           
+        </h:outputScript>
+
+		<h:form id="form">
+			<p:fieldset legend="Adiciona servidor ao  Grupo de impressão"
+				toggleable="true" id="painel" toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h2>
+						<p:outputLabel value="#{adicionaServidorGrupo.grupo.nome}"></p:outputLabel>
+					</h2>
+
+					<br />
+					<p:outputLabel
+						style="margin-left:-217px; position:absolute; margin-top: -18px;font-weight:bold;"
+						value="Servidores sem grupo:" />
+					<p:outputLabel
+						style="margin-left:22px;  position:absolute; margin-top: -18px; font-weight:bold;"
+						value="Servidores adicionados ao grupo:" />
+					<p:pickList id="pickList" converter="convertIservidor"
+						value="#{adicionaServidorGrupo.servidor}" var="servidor"
+						itemLabel="#{servidor.nome}" itemValue="#{servidor}" showSourceFilter="true" showTargetFilter="true" howTargetFilter="true" filterMatchMode="contains" />
+					<br />
+					<p:commandButton update="form" value="Salvar"
+						action="#{adicionaServidorGrupo.salvaGrupo}"></p:commandButton>
+						
+						<p:commandButton value="Voltar"
+						action="/quota/grupo-impressao?faces-redirect=true"></p:commandButton>
+
+				</center>
+			</p:fieldset>
+
+
+		</h:form>
+		
+	</ui:define>
+    
+
+</ui:composition>
+
+</html>

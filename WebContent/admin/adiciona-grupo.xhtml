@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra grupo" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Nome do grupo:" />
+						<p:inputText value="#{grupoControl.grupo.nome}"
+							styleClass="inputs" required="true"
+							requiredMessage="O Nome é necessário" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" update="formCatmat,:tabela"
+						id="salvar" actionListener="#{grupoControl.salva}"
+						icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{grupoControl.clear}" update="formCatmat,:tabela" />
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<br />
+		<p:fieldset legend="Pesquisa grupo" toggleable="true"
+			toggleSpeed="500">
+			<h:form id="tabela">
+				<p:dataTable var="item" value="#{grupoControl.listaTodos}"
+					emptyMessage="não existe registros"
+					
+					 paginator="true" rows="10">
+					
+					<p:column headerText="Id" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="nome" headerText="Nome"
+						style="white-space:normal !important;">
+				#{item.nome}
+			</p:column>
+
+					<p:column headerText="Opção" style="width:8%">
+						<p:commandButton id="Alterar" update=":dialog"
+							oncomplete="PF('pop').show()" icon="ui-icon-pencil"
+							title="Alterar">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{grupoControl.grupo}" />
+						</p:commandButton>
+
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+
+
+
+			</h:form>
+
+		</p:fieldset>
+
+
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Altera Usuario" closable="true" widgetVar="pop" width="800">
+
+
+
+			<h:form id="dialog">
+				<p:growl id="growl" closable="true" />
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nome do grupo:" />
+					<p:inputText value="#{grupoControl.grupo.nome}" styleClass="inputs"
+						required="true" requiredMessage="O Nome é necessário" />
+				</h:panelGrid>
+				<p:separator />
+				<p:commandButton value="Salvar" update=":tabela,dialog"
+					actionListener="#{grupoControl.altera}"
+					oncomplete="PF('pop').hide()" icon="ui-icon-disk" />
+				<p:commandButton value="Cancelar" update="dialog"
+					icon="ui-icon-arrowreturnthick-1-w"
+					actionListener="#{grupoControl.clear}" />
+			</h:form>
+
+
+
+		</p:dialog>
+	</ui:define>
+
+
+</ui:composition>
+</html>

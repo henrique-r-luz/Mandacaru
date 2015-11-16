@@ -1,0 +1,63 @@
+@CHARSET "ISO-8859-1";
+.inputs{
+	width: 400px;
+}
+	
+.tabela{
+   white-space:normal !important;
+}
+
+.separacao_paineis{
+   margin-top: 20px;
+   color: red;
+}
+
+.cotacaoColun1{
+	
+}
+
+.cotacaoColun2{
+   width: 200px;
+ 
+   
+}
+
+.cotacaoColun3{
+	
+}
+
+.cotacaoColun4{
+
+	
+}
+
+.cotacaoColun5{
+	
+}
+
+.cotacaoColun6{
+   width: 60px;	
+}
+
+.caledario input {
+	  width: 70px;	
+}
+
+
+.inputCotacao{
+   width: 180px;	
+}
+
+.inputQuant{
+   width: 60px;	
+}
+
+.inputEmail{
+   width: 200px;	
+}
+
+
+
+
+
+	

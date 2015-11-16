@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="copias1" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="82839788-40f6-461a-be89-d9f110f9de67">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="67"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="tabela" uuid="105168a1-c161-4885-ae93-2622cdde9d8c">
+		<parameter name="dataFinal" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="dataInicial" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="soma" class="java.math.BigDecimal">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select relacao.nome, relacao.numero, relacao.valor, (relacao.numero*relacao.valor) as vtotal from  (select serv.nome as nome,sum(idoc.numerodeCopias) as numero,icota.valor as valor
+from   iservidor serv
+inner join idoccopias  idoc
+on serv.id = idoc.servidor_id
+inner join icotacaocopias icota
+on idoc.cotacao_id = icota.id
+where idoc.data<=$P{dataFinal} and
+idoc.data>=$P{dataInicial}
+group by  serv.nome, icota.valor) as relacao]]>
+		</queryString>
+		<field name="nome" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="numero" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="valor" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="vtotal" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="dataInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataInicial_tb" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFinal_tb" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="soma_tb" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 1]]>
+	</queryString>
+	<field name="1" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="151" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="66" width="555" height="53" uuid="dc191bee-4e41-415f-a635-739beadd8d95"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MINISTÉRIO DA EDUCAÇÃO
+SECRETARIA DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA
+INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO NORTE DE MINAS GERAIS
+CAMPUS ARAÇUAÍ - MG
+Fazenda do Meio Pé da Serra, s/n – BR-367, Km 278 – Caixa Posta 11 - 39600-000 - Araçuaí - MG
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="257" y="4" width="197" height="55" uuid="2fc53203-d424-40b5-bae1-e889b2c8a480"/>
+				<imageExpression><![CDATA["../relatorio/logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="50" y="126" width="199" height="20" uuid="da6f7117-c21c-42ec-b919-3f76c587573d"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório  de cópias por  solicitante de:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="313" y="126" width="100" height="20" uuid="bffcf926-6984-497c-920f-784bd2ad0e2a"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="126" width="15" height="20" uuid="cc5b0b31-33ed-44f8-97fa-e64afd53462e"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[à]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="247" y="126" width="51" height="20" uuid="b2779086-a37d-44c2-912c-8ea77e4b2325"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="143" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table" style="table" x="47" y="1" width="431" height="140" uuid="4771704b-8b49-4602-8f91-34158dd163a1"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tabela" uuid="f60bb31b-1145-41b7-8ff1-c7d95028a51d">
+						<datasetParameter name="dataFinal">
+							<datasetParameterExpression><![CDATA[$P{dataFinal_tb}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="dataInicial">
+							<datasetParameterExpression><![CDATA[$P{dataInicial_tb}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="soma">
+							<datasetParameterExpression><![CDATA[$P{soma_tb}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="194" uuid="8b6bdf55-91a4-4b2c-acd3-27f6572c60b1">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="194" height="30" uuid="d11f55fc-8ffc-4650-bcb9-5e252c5cdf16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Solicitante]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="194" height="30" uuid="8512d52b-7ce9-4f72-bbc0-49fa2e07078d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="194" height="30" uuid="bace37bb-269d-4245-8f72-61279661ea8d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="96" uuid="bc1e4a2e-4aa9-4a05-a2d3-d40452ba3c75">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="96" height="30" uuid="4bd3d1f0-bcf0-4063-bd60-6508db9f03a5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Quantidade]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="96" height="30" uuid="8b4d1f90-76c2-4174-b42e-3621edd7c729"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="97f75c2e-a2e8-478f-b7b5-5b289eb0222e">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="935f83b0-066c-4774-86eb-b26041545325"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Preço Unitário]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="28a16461-9a59-4a9c-af63-78946fae3a57"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="6a645255-19c0-44ff-8cde-af5063f3a8fd">
+						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="e1109e08-4283-4dfe-a856-e859332b9e2b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Valor Total]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table_CH" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="08ae6c5d-5bc2-4f2f-adc1-ac7d637ee6bd"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{soma}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="table_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="cc4e873a-bdac-4daf-96fb-a92cee742b3d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{vtotal}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="174">
+			<line>
+				<reportElement x="157" y="23" width="240" height="1" uuid="a7f8bddd-694c-47d5-a392-89b1077c5025"/>
+			</line>
+			<staticText>
+				<reportElement x="213" y="75" width="128" height="20" uuid="b1a1a184-8005-4004-b3ae-0954cfc01ae6"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cemtral Serviço Ltda.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="157" y="121" width="240" height="1" uuid="c70812db-1a84-40e1-96dc-64513bad8aef"/>
+			</line>
+			<line>
+				<reportElement x="157" y="72" width="240" height="1" uuid="06a01fed-5b9d-4c6f-b1ca-59bea493f6ea"/>
+			</line>
+			<staticText>
+				<reportElement x="225" y="124" width="105" height="20" uuid="083e1bff-5c11-4b22-9471-8d208d9ba85a"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fiscal de contrato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="25" width="122" height="20" uuid="e2211d4a-417e-4559-94c9-7c742ee454d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diretoria de Ensino]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

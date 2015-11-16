@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hl="http://henrique.ifnmg.edu.br">
+
+
+<ui:composition template="../_main.xhtml">
+
+	<ui:define name="centro">
+
+		<h:form id="selecao">
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Lista de Itens pedidos" toggleable="true"
+				toggleSpeed="500">
+
+				<p:dataTable var="orcamento"
+					value="#{listaProcesso.modelItensSelect}"
+					emptyMessage="não existe registros"
+					selection="#{listaProcesso.selectedItens}" paginator="true"
+					rows="10">
+
+					<f:facet name="header">
+
+					</f:facet>
+					<p:column selectionMode="multiple" style="width:20px;" />
+					<p:column headerText="Quatd."
+						style="white-space:normal !important; width:35px;">
+						<p:outputLabel value="#{orcamento.quantidade}" style="width:35px;" />
+					</p:column>
+					<p:column headerText="Num. pedido"
+						style="white-space:normal !important; width:35px;">
+						<p:outputLabel value="#{orcamento.pedidos.id}" style="width:35px;" />
+					</p:column>
+
+					<p:column id="nome" headerText="Nome"
+						filterBy="#{item.material.nome}" filterMatchMode="contains"
+						style="white-space:normal !important; width:80px;">
+				#{orcamento.item.material.nome} 
+			</p:column>
+					<p:column headerText="Catmat" filterMatchMode="contains"
+						style="white-space:normal !important;width:40px;">
+				#{orcamento.item.catmat.numero}
+			</p:column>
+
+					<p:column headerText="Categória" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamento.item.categoria.nome}
+			</p:column>
+					<p:column headerText="Tipo Item" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamento.item.tipo.nome}
+			</p:column>
+					<p:column headerText="Descrição"
+						style="white-space:normal !important;  width:40%;"
+						filterMatchMode="contains">
+						<h:outputText id="display"
+							value="#{orcamento.item.material.descricao}" escape="false" />
+
+					</p:column>
+
+					<p:column headerText="Valor med."
+						style="white-space:normal !important; width:50px;">
+						 #{orcamento.valorMedio}
+					</p:column>
+				</p:dataTable>
+
+
+
+
+				<p:commandButton value="Adicona itens"
+					actionListener="#{listaProcesso.adicionarItem}" process="selecao"
+					update="selecao" />
+
+
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Lista do processo" id="selecionados"
+				toggleable="true" toggleSpeed="500">
+
+
+
+				<p:dataTable var="orcamento" value="#{listaProcesso.modelItens}"
+					emptyMessage="não existe registros"
+					selection="#{listaProcesso.selectedItensList}" paginator="true"
+					rows="10">
+
+					<f:facet name="header">
+                            <p:outputPanel>
+								<h:outputText value="lista de itens para processo de Número: #{listaProcesso.processo.numero} "
+									style="font-size: 14px;" />
+							</p:outputPanel>
+					</f:facet>
+					<p:column selectionMode="multiple" style="width:20px;" />
+					<p:column headerText="Quatd."
+						style="white-space:normal !important; width:35px;">
+						<p:outputLabel value="#{orcamento.quantidade}" style="width:35px;" />
+					</p:column>
+					<p:column headerText="Num. pedido"
+						style="white-space:normal !important; width:35px;">
+						<p:outputLabel value="#{orcamento.pedidos.id}" style="width:35px;" />
+					</p:column>
+
+					<p:column id="nome" headerText="Nome"
+						filterBy="#{item.material.nome}" filterMatchMode="contains"
+						style="white-space:normal !important; width:80px;">
+				#{orcamento.item.material.nome} 
+			</p:column>
+					<p:column headerText="Catmat" filterMatchMode="contains"
+						style="white-space:normal !important;width:40px;">
+				#{orcamento.item.catmat.numero}
+			</p:column>
+
+					<p:column headerText="Categória" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamento.item.categoria.nome}
+			</p:column>
+					<p:column headerText="Tipo Item" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{orcamento.item.tipo.nome}
+			</p:column>
+					<p:column headerText="Descrição"
+						style="white-space:normal !important;  width:40%;"
+						filterMatchMode="contains">
+						<h:outputText id="display"
+							value="#{orcamento.item.material.descricao}" escape="false" />
+
+					</p:column>
+
+					<p:column headerText="Valor med."
+						style="white-space:normal !important; width:50px;">
+						 #{orcamento.valorMedio}
+					</p:column>
+				</p:dataTable>
+
+
+
+
+
+				<p:commandButton value="Remove itens"
+					actionListener="#{listaProcesso.adicionarItem}" update="selecao" />
+				<p:commandButton value="Enviar para pregão" action="#{listaProcesso.enviaPregao}"
+					 update="selecao" />
+
+
+
+
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

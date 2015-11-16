@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	
+	<ui:define name="centro">
+      <h:body onload="loadFields()" onunload="loadFields()" >
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra Servidor Ldap" toggleable="true"
+				id="painel" toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<hl:ldap  />
+					<p:commandButton value="Salvar" id="salvar"
+						update=":tabela,formCatmat" actionListener="#{ldapControl.salvar}"
+						icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{ldapControl.clear}" ajax="true" immediate="true"
+						type="reset" update="formCatmat" />
+
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<br />
+		<p:fieldset legend="Pesquisa grupo" toggleable="true"
+			toggleSpeed="500">
+			<h:form id="tabela">
+				<p:dataTable var="item" value="#{ldapControl.listaTodos}"
+					emptyMessage="não existe registros" paginator="true" rows="10">
+
+					<p:column headerText="Id" style="white-space:normal !important;">
+				#{item.id}
+				</p:column>
+			
+					<p:column id="servidor" headerText="Servidor"
+						style="white-space:normal !important;">
+				#{item.servidor}
+			</p:column>
+					<p:column id="porta" headerText="Porta"
+						style="white-space:normal !important;">
+				#{item.porta}
+			</p:column>
+					<p:column headerText="Usuário"
+						style="white-space:normal !important;">
+				#{item.cn}
+			</p:column>
+		
+					<p:column headerText="OU dos Usuários"
+						style="white-space:normal !important;">
+				#{item.ouLogin}
+			</p:column>
+			
+
+					<p:column headerText="Opção" style="width:12%">
+						<p:commandButton id="Alterar" update=":dialog"
+							oncomplete="PF('pop').show()" icon="ui-icon-pencil"
+							title="Alterar">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{ldapControl.ldap}" />
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-trash" title="Exclui Configuração"
+							update=":dialog" oncomplete="PF('popExcluir').show()">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{ldapControl.ldap}" />
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-signal" title="Teste conexão LDAP"
+							update=":formCatmat:growl"
+							actionListener="#{ldapControl.testaLdap}">
+
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</p:fieldset>
+
+
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Altera Ldap" closable="true" widgetVar="pop" width="800">
+
+
+
+			<h:form id="dialog">
+				<p:growl id="growl" closable="true" />
+
+				<hl:ldap />
+				<p:commandButton value="Salvar" id="salvar" update=":tabela,dialog"
+					actionListener="#{ldapControl.alterar}" oncomplete="PF('pop').hide()" icon="ui-icon-disk" />
+				<p:commandButton value="Cancelar" id="cancelar"
+					icon="ui-icon-arrowreturnthick-1-w"
+					actionListener="#{ldapControl.clear}" />
+			</h:form>
+
+
+
+		</p:dialog>
+
+		<p:dialog id="popExcluir" modal="true" appendToBody="true"
+			header="Excuir Configuração" closable="true" widgetVar="popExcluir"
+			width="250">
+
+
+
+			<h:form id="excluir">
+				<center>
+					<p:outputLabel
+						value="Você deseja realmente excluir A configuração?" />
+					<br /> <br />
+					<p:commandButton value="Sim" action="#{ldapControl.excluir}"
+						oncomplete="PF('popExcluir').hide()" update=":tabela" />
+					<p:commandButton value="Não" onclick="PF('popExcluir').hide()" />
+				</center>
+			</h:form>
+
+
+
+		</p:dialog>
+     </h:body>
+	</ui:define>
+
+
+</ui:composition>
+</html>

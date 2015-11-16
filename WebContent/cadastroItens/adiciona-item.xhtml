@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Cadastra Item" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+
+
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Inserir Catmat:" />
+						<h:panelGroup>
+							<p:inputText value="#{itemControl.numeroCat}" disabled="true"
+								maxlength="6" />
+							<p:commandButton onclick="dlg2.show();" id="addCatmat"
+								icon="ui-icon ui-icon-search" type="button" />
+						</h:panelGroup>
+						<p:outputLabel value="Nome:" />
+						<p:inputText value="#{itemControl.material.nome}"
+							disabled="#{itemControl.ativa}" required="true "
+							styleClass="inputs" />
+
+						<p:outputLabel value="Categória:" />
+						<p:selectOneMenu id="categoria"
+							value="#{itemControl.item.categoria}" effect="fade" filter="true"
+							converter="convertCategoria" required="true">
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{categoriaControl.listaTodos}"
+								var="categoria" itemLabel="#{categoria.nome}"
+								itemValue="#{categoria}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Tipo Item:" />
+						<p:selectOneMenu rendered="true" id="tipo"
+							value="#{itemControl.item.tipo}" effect="fade" filter="true"
+							required="true" filterMatchMode="startsWith"
+							converter="convertTipo">
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{tipoControl.listaTodos}" var="tipo"
+								itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Descrição:" />
+						<p:commandButton disabled="#{itemControl.ativa}"
+							onclick="dlgDescri.show();" icon="ui-icon-disk"
+							update=":catmatGenerico" />
+						<h:outputText value="#{material.descricao}" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar"
+						actionListener="#{itemControl.salva}" id="salvar"
+						icon="ui-icon-disk" update="formCatmat" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{itemControl.clear}" update="formCatmat" />
+					<p:commandButton value="Catmat genérico" id="add_cat"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{itemControl.clear}" update="formCatmat" />
+				</center>
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Pesquisa Item" toggleable="true"
+				toggleSpeed="500">
+
+				<hl:tabelaAddItem lista="#{itemControl.listaTodos}">
+				</hl:tabelaAddItem>
+			</p:fieldset>
+
+
+		</h:form>
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlg2" width="800">
+			<h:form id="dialog">
+				<p:growl id="growl2" closable="true" />
+				<hl:tabelaCatmat lista="#{catmatControl.listaTodos}">
+					<ui:define name="final">
+
+						<p:column headerText="Opção" style="width:8%">
+							<p:commandButton id="add" icon="ui-icon ui-icon-search"
+								oncomplete="dlg2.hide()" title="View" update=":formCatmat">
+
+								<f:setPropertyActionListener value="#{item}"
+									target="#{itemControl.catmatObj}" />
+
+							</p:commandButton>
+
+						</p:column>
+
+					</ui:define>
+				</hl:tabelaCatmat>
+			</h:form>
+		</p:dialog>
+
+
+
+		<p:dialog id="modalDescricao" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlgDescri" width="450">
+
+			<p:growl id="growl2" closable="true" />
+			<h:form id="catmatGenerico">
+
+				<p:fieldset legend="Cadastra Ctamat Genérico" toggleable="true"
+					id="painel" toggleSpeed="500">
+					<h:panelGrid columns="1">
+						<p:outputLabel value="Inserir descrição catmat:" />
+
+						<p:editor id="editor"
+							value="#{itemControl.materialGenericoControl.material.descricao}"
+							width="400"
+							disabled="#{itemControl.materialGenericoControl.verificaTipoCtamat}" />
+						<p:commandButton value="Catmat genérico" id="add_cat"
+							icon="ui-icon-arrowreturnthick-1-w"
+							disabled="#{itemControl.materialGenericoControl.verificaTipoCtamat}"
+							action="#{itemControl.materialGenericoControl.salva}"
+							update="catmatGenerico" />
+					</h:panelGrid>
+				</p:fieldset>
+				<p:dataTable var="material" emptyMessage="não existe registros"
+					paginator="true"
+					value="#{itemControl.materialGenericoControl.listaTodos}" rows="10">
+					<p:column id="Status" headerText="Descrição do material"
+						filterMatchMode="contains" style="white-space:normal !important;">
+						<h:outputText value="#{material.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opção" style="width:8%">
+
+						<p:commandButton id="alterar" icon="ui-icon-document"
+							title="Ver lista de itens">
+
+
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+
+
+
+</ui:composition>
+</html>

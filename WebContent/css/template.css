@@ -1,0 +1,25 @@
+@CHARSET "ISO-8859-1";
+
+.ui-widget {
+	font-size: 12px;
+}
+
+ .ui-datalist-data {  
+      border: 0px;  
+ }  
+
+
+.ui-overlay-visible{
+	height: 90%;
+}
+
+
+
+.html {
+	height: 100%;
+}
+
+.body {
+	height:100%;
+	      
+}

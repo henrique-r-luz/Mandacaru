@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hl="http://henrique.ifnmg.edu.br">
+
+
+<ui:composition template="../_main.xhtml">
+
+	<ui:define name="centro">
+
+		<h:form id="selecao">
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Lista de Itens" toggleable="true"
+				toggleSpeed="500">
+
+
+				<hl:tabelaAddItem lista="#{listaPedidos.modelItensSelect}"
+					selected="#{listaPedidos.selectedItens}">
+					<ui:define name="inicio">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="lista de itens para pedidos"
+									style="font-size: 14px;" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column selectionMode="multiple" style="width:2%" />
+					</ui:define>
+				</hl:tabelaAddItem>
+				<p:commandButton value="Adicona itens"
+					actionListener="#{listaPedidos.adicionarItem}" process="selecao" update="selecao" />
+
+
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Lista de Pedidos" id="selecionados" toggleable="true"
+				toggleSpeed="500">
+
+				<hl:tabelaAddItem lista="#{listaPedidos.modelItens}"
+					selected="#{listaPedidos.selectedItensList}">
+					<ui:define name="inicio">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Lista de #{listaPedidos.pedidos.nome}"
+									style="font-size: 14px;" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column selectionMode="multiple" style="width:20px;" />
+						<p:column headerText="Quatd."
+							style="white-space:normal !important; width:35px;">
+			<p:inputText value="#{item.quantidade}"  style="width:35px;" /> 
+			</p:column>
+
+					</ui:define>
+				</hl:tabelaAddItem>
+				<p:commandButton value="Remove itens"
+					actionListener="#{listaPedidos.adicionarItem}" update="selecao" />
+
+				<p:commandButton action="#{listaPedidos.criaOrcamento}"
+			 id="but_orcamento" ajax="false" 
+					value="Criar Orçamento">
+
+				</p:commandButton>
+
+
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

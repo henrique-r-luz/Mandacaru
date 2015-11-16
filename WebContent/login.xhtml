@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+ 
+<f:view>
+    <h:head>
+       <link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/template.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/cadastro.css" />
+ 
+       
+    </h:head>
+ 
+    <h:body>
+   
+        <p:dialog header="Login"
+            modal="false" closable="false" position="center"
+            widgetVar="modalLogin" minWidth="300" width="300" 
+            draggable="false" resizable="false" visible="true">
+ 
+            <center>
+                <h:outputText id="erro" value="${SPRING_SECURITY_LAST_EXCEPTION.message}"
+                    rendered="#{param.error}"
+                    style="color:darkred; font-size: 14px; padding-bottom: 10px;" />
+ 
+                <form action="j_spring_security_check" method="post">
+                    <h:panelGrid columns="2" cellpadding="3" style="font-weight: bold;">
+                        <h:outputLabel for="j_username" value="* Usuário:" />
+                        <p:inputText id="j_username" size="15" />
+ 
+                        <h:outputLabel for="j_password" value="* Senha:" />
+                        <p:password id="j_password" size="15" feedback="false" autocomplete="false"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Entrar" />
+                </form>
+            </center>
+        </p:dialog>
+        
+    </h:body>
+</f:view>
+</html>

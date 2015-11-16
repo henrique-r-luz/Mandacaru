@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+
+	<h:panelGrid columns="2">
+		
+		<p:outputLabel value="URL diretorio:" />
+		<p:inputText value="#{configControl.conf.urlDiretorio}"
+			styleClass="inputs" required="true"
+			requiredMessage="A URL diretorio do diretorio é necessária" />
+		<p:outputLabel value="URL base:" />
+		<p:inputText value="#{configControl.conf.urlBase}"
+			styleClass="inputs" required="true"
+			requiredMessage="A URL base é necessário" />
+		
+		
+			
+		<p:outputLabel value="Configuração de desenvolvimento:" />
+		<p:selectBooleanCheckbox value="#{configControl.conf.producao}" />
+		
+	</h:panelGrid>
+	<p:separator />
+
+
+
+</ui:component>
+</html>

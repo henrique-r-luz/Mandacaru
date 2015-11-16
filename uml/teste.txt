@@ -1,0 +1,23 @@
+<!-- <hl:tabelaAddItem lista="#{controla.itemDataModel}">
+					<ui:define name="inicio">
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="Nome do pedidos: Compras Informatica 2013" style="font-size: 14px;" />
+								<br/>
+								<h:outputText value="Número do perdido: 12" style="font-size: 14px;" />
+							</p:outputPanel>
+						</f:facet>
+						<p:column selectionMode="multiple" style="width:2%" />
+						<p:column headerText="Quantidade">
+							<p:inputText style="width:35px;" value="0" />
+						</p:column>
+					</ui:define>
+					<ui:define name="final">
+						<f:facet name="footer">
+							<p:commandButton  value="Enviar Lista para Compra"
+								icon="ui-icon-search" action="#{controla.salvaLista}"  update="@form" />
+							<p:commandButton style="" value="Remover Itens"
+								icon="ui-icon-search" action="#{controla.imprime}" />
+						</f:facet>
+					</ui:define>
+				</hl:tabelaAddItem>  -->

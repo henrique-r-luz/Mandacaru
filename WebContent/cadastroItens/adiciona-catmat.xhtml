@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra catmat" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Número:" />
+						<p:inputMask value="#{catmatControl.catmat.numero}" mask="999999"
+							styleClass="inputs" required="true"
+							requiredMessage="O campo número é necessário" />
+							<p:outputLabel value="Tipo Catmat:" />
+						<p:selectOneMenu id="catmat"
+							value="#{catmatControl.catmat.tipocatmat}" effect="fade" filter="true"
+							converter="convertTipoCatMat" required="true" >
+							<f:selectItem itemLabel="selecione um" itemValue="" />
+							<f:selectItems value="#{tipoCatMatControl.listaTodos}"
+								var="item" itemLabel="#{item.nome}"
+								itemValue="#{item}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Nome do material:" />
+						<p:inputText value="#{catmatControl.material.nome}"
+							styleClass="inputs" required="true"
+							requiredMessage="O campo nome é necessário" />
+
+						<p:outputLabel value="Descrição:" />
+						<p:editor value="#{catmatControl.material.descricao}" id="editor"
+							width="400" required="true"
+							requiredMessage="O campo descrição é necessário" />
+
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" update="formCatmat" id="salvar"
+						actionListener="#{catmatControl.salva}" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{catmatControl.clear}" update="formCatmat" />
+				</center>
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Pesquisa Catmat" toggleable="true"
+				toggleSpeed="500">
+
+				<hl:tabelaCatmat lista="#{catmatControl.listaTodos}">
+
+					<ui:define name="final">
+
+						<p:column headerText="Opção" style="width:8%">
+							<p:commandButton id="excluir" icon="ui-icon-trash" title="View">
+
+							</p:commandButton>
+							<p:commandButton id="alterar" icon="ui-icon-document"
+								title="View">
+
+							</p:commandButton>
+
+						</p:column>
+
+					</ui:define>
+
+				</hl:tabelaCatmat>
+
+
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+</html>

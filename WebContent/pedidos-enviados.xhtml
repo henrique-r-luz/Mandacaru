@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hl="http://henrique.ifnmg.edu.br">
+
+
+<ui:composition template="_main.xhtml">
+	<ui:define name="centro">
+		<p:fieldset legend="Lista de Pedidos Recebidos" toggleable="true"
+			toggleSpeed="500">
+			<h:form>
+
+
+				<p:dataTable var="item" value="#{controla.vetItem}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}"
+					filteredValue="#{controla.filteredItem}" paginator="true" rows="10">
+					<ui:insert name="cabeca"></ui:insert>
+					<f:facet name="header">
+
+					</f:facet>
+					<ui:insert name="inicio"></ui:insert>
+					<p:column id="Numero" headerText="Número do pedido" filterBy="#{item.nome}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				12
+			</p:column>
+					<p:column headerText="Nome" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				Informática 2013
+			</p:column>
+					<p:column headerText="Data" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				03/06/2013
+			</p:column>
+					<p:column headerText="Coordenação/núcleo" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				Henrique Luz
+			</p:column>
+					<p:column headerText="Coordenador" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				núcleo da Tecnologia da Informaçõa
+			</p:column>
+					<p:column style="width:8%">
+						<p:commandButton id="ver" icon="ui-icon-search" title="View">
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+		</p:fieldset>
+	</ui:define>
+</ui:composition>
+</html>

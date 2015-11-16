@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form>
+			<p:growl id="growl" closable="true" />
+			<p:fieldset legend="Criar Processo">
+				<center>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Número do Processo:"
+							style="margin-right:5px" />
+						<p:inputText styleClass="inputs" required="true"
+							value="#{processoControl.processo.numero}" maxlength="22"
+							rendered="true" />
+						<p:outputLabel value="Descrição:" />
+						<p:editor id="editor" required="true"
+							value="#{processoControl.processo.descricao}" rendered="true"
+							width="400" />
+						<p:commandButton value="Salvar" style="margin-left:5px;"
+							id="salvar" icon="ui-icon-disk" action="#{processoControl.salva}"
+							update="@form" />
+					</h:panelGrid>
+
+				</center>
+			</p:fieldset>
+
+			<p:fieldset>
+				<p:dataTable var="item" value="#{processoControl.listaTodos}"
+					emptyMessage="não existe registros"
+					selection="#{controla.selectedItens}" paginator="true" rows="10">
+					<f:facet name="header">
+                         
+					</f:facet>
+
+					<p:column headerText="Id" filterBy="#{item.id}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+					<p:column id="nume" headerText="Número" filterBy="#{item.numero}"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.numero}
+				
+			</p:column>
+
+					<p:column id="descricao" headerText="Descrição"
+						filterBy="#{item.descricao}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+						<h:outputText id="display" value="#{item.descricao}"
+							escape="false" />
+
+					</p:column>
+					<p:column id="Pessoa" headerText="Pessoa"
+						filterBy="#{item.usuario.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.usuario.nome}
+			</p:column>
+					<p:column id="Status" headerText="status"
+						filterBy="#{item.statusPedidos.nome}" filterMatchMode="contains"
+						style="white-space:normal !important;">
+				#{item.statusPedidos.nome}
+			</p:column>
+
+					<p:column headerText="Opção" style="width:8%">
+
+						<p:commandButton
+							action="#{processoControl.criaListaProcesso(item.id)}"
+							immediate="true" ajax="false" id="alterar"
+							icon="ui-icon-document" title="Ver lista de itens">
+
+
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

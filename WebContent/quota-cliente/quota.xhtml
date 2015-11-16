@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="info">
+			<p:growl id="growl" closable="true" />
+		</h:form>
+		<h:form id="formImprime" enctype="multipart/form-data"
+			acceptcharset="utf-8">
+			<p:fieldset legend="Impressão de documento" toggleable="true"
+				id="painel" toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<p:outputLabel value="OBS: " style="font-weight: bold; color: red;"></p:outputLabel>
+					<p:outputLabel value="Verifique se existe papel A4 na impressora"
+						style="font-weight: bold; color: red;"></p:outputLabel>
+					<br />
+					<p:outputLabel
+						value="Informação: insira aqui o arquivo para Impressão"></p:outputLabel>
+					<p:fileUpload fileUploadListener="#{quota.doUpload}" id="upload"
+						description="Arquivo doc, odt, xls, xls, pdf" required="true"
+						fileLimit="1" auto="true" widgetVar="fileupload"
+						label="Selecione arquivo de impressão" uploadLabel="Enviar"
+						cancelLabel="Cancelar" update="upload,:valid"
+						oncomplete="#{quota.popImprime}" mode="advanced"
+						style="margin-top: 5px;" />
+
+
+                    
+
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<h:form>
+			<p:fieldset legend="Filtro" toggleable="true" toggleSpeed="500">
+				<h:panelGrid columns="9">
+
+					<p:outputLabel value="Nome Documento:" />
+					<p:inputText style="width:200px;"
+						value="#{copiasControl.nomeDocumento}" />
+
+					<p:outputLabel value="Impressora:" />
+					<p:selectOneMenu id="impressora" style="width:150px"
+						value="#{copiasControl.impressora}" effect="fade" filter="true"
+						converter="convertImpressorar">
+						<f:selectItem itemLabel="selecione um" itemValue="" />
+						<f:selectItems value="#{impressoraControl.listaTodos}"
+							var="impressora" itemLabel="#{impressora.nome}"
+							itemValue="#{impressora}" />
+
+					</p:selectOneMenu>
+					<p:outputLabel value="Data Inicial:" style="" />
+					<p:calendar id="datai" 
+						requiredMessage="O campo data  é obrigatorio" pattern="dd/MM/yyyy"
+						locale="pt_BR" value="#{copiasControl.dataInicial}"
+						styleClass="caledario" />
+					<p:outputLabel value="Data Final:" style="" />
+					<p:calendar id="dataf"
+						requiredMessage="O campo data  é obrigatorio" pattern="dd/MM/yyyy"
+						locale="pt_BR" value="#{copiasControl.dataFinal}"
+						styleClass="caledario"  />
+					<p:commandButton value="Filtrar" actionListener="#{copiasControl.filtrar}"  update=":relatorio,:info:growl">
+
+
+					</p:commandButton>
+
+				</h:panelGrid>
+
+
+			</p:fieldset>
+		</h:form>
+		<br />
+		<h:form id="relatorio">
+			<p:fieldset legend="Relatorio Copias" toggleable="true"
+				toggleSpeed="500">
+
+
+				<p:dataTable var="obj" value="#{copiasControl.filtraQuotaServidor}"
+					emptyMessage="não existe registros"  paginator="true" rows="10" >
+
+					<f:facet name="header">
+						<p:outputLabel style="font-size: 14px;  margin-right:80px;"
+							value="Total de impressões:  #{copiasControl.filtraTotalCopiasServidor} " />
+						<p:outputLabel style="font-size: 14px;"
+							value="Número de impressões restantes: #{quota.quotaRestante}" />
+					</f:facet>
+
+					<p:column id="id" headerText="Id"
+						style="white-space:normal !important;">
+				#{obj.id} 
+			</p:column>
+
+					<p:column headerText="Nome Documento" filterMatchMode="contains"
+						style="white-space:normal !important; ">
+				#{obj.nomeDocumento} 
+			
+               </p:column>
+					<p:column headerText="Data" filterMatchMode="contains"
+						style="white-space:normal !important; ">
+						<h:outputText value="#{obj.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="Impressora" headerText="Impressora"
+						filterMatchMode="contains" style="white-space:normal !important; ">
+				#{obj.impressora.nome} 
+			
+               </p:column>
+
+					<p:column id="Servidor" headerText="Servidor"
+						filterMatchMode="contains" style="white-space:normal !important;">
+				#{obj.servidor.nome} 
+			
+               </p:column>
+
+					<p:column headerText="Número de Copias" filterMatchMode="contains"
+						style="white-space:normal !important; width: 80px;">
+				#{obj.numeroCopias} 
+			
+               </p:column>
+
+
+
+					<p:column headerText="View" filterMatchMode="contains"
+						style="white-space:normal !important;  width: 40px; ">
+						<p:commandButton onclick="popPdf.show()" value="PDF" update=":doc">
+							<f:setPropertyActionListener value="#{obj}"
+								target="#{quota.copias}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+			</p:fieldset>
+		</h:form>
+
+
+		<p:dialog id="modalDialogPdf" height="600" modal="true"
+			appendToBody="true" header="Documento" width="80%" closable="true"
+			widgetVar="popPdf">
+
+
+			<h:form id="doc">
+
+
+				<object type="application/pdf"
+					data="#{config.urlBase}/#{config.docImpressao}/#{quota.copias.urlDocumento}.pdf?pfdrid_c=true"
+					height="580" width="100%" />
+
+
+			</h:form>
+
+
+		</p:dialog>
+
+
+
+		<p:dialog id="modalDialog" height="520" modal="true"
+			appendToBody="true" header="Propriedades de Impressão" width="80%"
+			closable="true" widgetVar="pop">
+
+
+			<p:ajax event="close" listener="#{quota.cancelaPopImprime}"
+				update=":formImprime:upload" immediate="false" />
+			<h:form id="valid" enctype="multipart/form-data"
+				acceptcharset="utf-8">
+
+
+
+				<p:fieldset id="dados" toggleable="true" toggleSpeed="500">
+					<p:growl id="growlPop" closable="true" />
+
+
+					<h:outputText
+						style="margin-left:5px;font-weight: bold; margin-top: 10px; font-size:14px;"
+						value="Arquivo: #{quota.copias.nomeDocumento} | Total de Páginas: #{quota.numeroPaginas}"
+						escape="false" />
+                            
+					<br />
+					<p:outputLabel style="margin-left:5px; font-weight: bold;"
+						value="Número de paginas que podem ser impressas:"></p:outputLabel>
+					<p:outputLabel style="margin-left:5px; font-weight: bold;"
+						value="#{quota.copiasImpressao}"></p:outputLabel>
+					<br />
+
+					<h:panelGrid columns="8">
+						<p:outputLabel value="Impressora:" />
+						<p:selectOneMenu id="impressora" style="width:150px"
+							value="#{quota.cotaImpressora}" effect="fade" filter="true"
+							converter="convertImpressorar">
+							<f:selectItem itemLabel="#{quota.cotaImpressora.nome}"
+								itemValue="#{quota.cotaImpressora}" />
+							<f:selectItems value="#{quota.impressora}" var="impressora"
+								itemLabel="#{impressora.nome}" itemValue="#{impressora}" />
+
+						</p:selectOneMenu>
+						<p:outputLabel value="Número de Cópias:" />
+						<p:inputText style="width:50px" value="#{quota.loopCopias}" />
+						<p:outputLabel value="Páginas:" />
+						<p:inputText id="paginas" value="#{quota.verificaNumeroPaginas}"
+							style="width:200px">
+
+						</p:inputText>
+						<h:outputText value="Paisagem: " />
+						<p:selectBooleanCheckbox value="#{quota.paisagem}" />
+					</h:panelGrid>
+				</p:fieldset>
+
+
+
+
+
+
+
+
+				<object type="application/pdf"
+					data="#{copiasControl.returnDoc(quota.nomeBd)}?pfdrid_c=true"
+					height="400" width="100%" />
+				<p:separator />
+
+				<p:commandButton value="Imprimir" action="#{quota.imprimir}"
+					id="butImprimir" oncomplete="if(args.sucesso==true){pop.hide();}"
+					update="valid,growlPop,:relatorio" />
+
+			</h:form>
+
+
+
+
+		</p:dialog>
+
+
+	</ui:define>
+
+
+</ui:composition>
+</html>

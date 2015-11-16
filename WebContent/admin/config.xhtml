@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:hl="http://henrique.ifnmg.edu.br"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="formCatmat">
+			<p:fieldset legend="Cadastra Configuração" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+				   <p:growl id="growl" closable="true" />
+					<hl:config />
+					<p:commandButton value="Salvar" update="formCatmat,:formTabela" id="salvar"
+						actionListener="#{configControl.salvar}" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar" id="cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{configControl.clear}" ajax="true" immediate="true" type="reset" update="formCatmat" />
+				</center>
+			</p:fieldset>
+			</h:form>
+			<br />
+			<br />
+			<h:form id="formTabela">
+			<p:fieldset legend="Configuração" toggleable="true"
+				toggleSpeed="500">
+
+				<p:dataTable var="item" id="tabela" value="#{configControl.listaTodos}"
+					emptyMessage="não existe registros" paginator="true" rows="10">
+
+
+
+
+					<p:column id="id" headerText="id"
+						style="white-space:normal !important;">
+				#{item.id}
+			</p:column>
+
+				
+			
+					<p:column headerText="Url Direto." style="white-space:normal !important;">
+				#{item.urlDiretorio}
+			</p:column>
+					<p:column headerText="Url base" style="white-space:normal !important;">
+				#{item.urlBase}
+			</p:column>
+				
+				<p:column headerText="Configuração de desenvolvimento" style="white-space:normal !important;">
+				#{item.producao}
+			</p:column>
+				
+					
+					<p:column headerText="Opção" style="width:50px;">
+
+						<p:commandButton   icon="ui-icon-pencil"
+							title="altera Usuario"  update=":dialog" oncomplete="PF('pop').show()" >
+							<f:setPropertyActionListener value="#{item}"
+								target="#{configControl.conf}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+			</p:fieldset>
+		</h:form>
+
+
+
+		<p:dialog  id="modalDialog" modal="true" appendToBody="true"
+			header="Altera Configuração" closable="true" widgetVar="pop" width="800">
+              
+              
+             
+			<h:form id="dialog">
+			     <p:growl id="growl" closable="true" />
+				<hl:config  />
+
+				<p:commandButton value="Salvar" update=":formTabela,:formCatmat:growl,dialog"
+					actionListener="#{configControl.alterar}" oncomplete="PF('pop').hide()"  icon="ui-icon-disk" />
+				<p:commandButton value="Cancelar"  update="dialog"
+					icon="ui-icon-arrowreturnthick-1-w"
+					actionListener="#{configControl.clear}" />
+			</h:form>
+
+
+
+		</p:dialog>
+
+	</ui:define>
+
+
+</ui:composition>
+</html>

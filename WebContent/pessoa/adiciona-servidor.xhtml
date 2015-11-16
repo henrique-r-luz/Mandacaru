@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="form">
+			<p:fieldset legend="Cadastra Servidor" toggleable="true" id="painel"
+				toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Cpf:" />
+						<p:inputMask value="#{servidorControl.servidor.cpf}"
+							style="width:100px" mask="999.999.999-99" required="true"
+							requiredMessage="O campo cpf é necessário" />
+
+						<p:outputLabel value="Nome:" />
+						<p:inputText value="#{servidorControl.servidor.nome}"
+							styleClass="inputs" required="true"
+							requiredMessage="O campo nome é necessário" />
+
+						<p:outputLabel value="Matricula:" />
+						<p:inputMask value="#{servidorControl.servidor.matricula}"
+							styleClass="inputs" mask="9999999" style="width:100px" />
+
+
+
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar" action="#{servidorControl.salva}"
+						update="form,:formTabela" icon="ui-icon-disk" />
+					<p:commandButton value="Cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{servidorControl.clear}" update="form" />
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<br />
+		<h:form id="formTabela">
+			<p:fieldset legend="Pesquisa Servidor" toggleable="true"
+				toggleSpeed="500">
+
+				<p:panel header="Filtro">
+					<h:panelGrid columns="3">
+						<h:panelGroup style="margin-right: 10px">
+							<h:outputText value="Cpf: " />
+							<p:inputMask  readonly="false" style="width:100px"
+								value="#{servidorControl.cpf}" >
+								    <p:ajax   event="keyup" update="tabela" />
+							</p:inputMask>
+						</h:panelGroup>
+						<h:panelGroup style="margin-right: 10px">
+							<h:outputText value="Nome: " />
+							<p:inputText value="#{servidorControl.nome}" style="width:300px" >
+							   <p:ajax event="keyup" update="tabela" />
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:panel>
+				<br />
+				<p:dataTable id="tabela" var="servidor" value="#{servidorControl.listaTodos}"
+					emptyMessage="não existe registros" paginator="true" rows="10">
+
+
+					<p:column id="Cpf" headerText="cpf"
+						style="white-space:normal !important; width:80px;">
+						
+				#{servidor.cpf} 
+			</p:column>
+
+
+					<p:column id="nome" headerText="Nome"
+						style="white-space:normal !important; width:80px;">
+				#{servidor.nome} 
+			</p:column>
+
+
+					<p:column id="matricula" headerText="Matricula"
+						style="white-space:normal !important; width:80px;">
+				#{servidor.matricula} 
+			</p:column>
+
+					<p:column id="opcoes" headerText="Opçoes" style="width:5%">
+						<p:commandButton update=":dialog" oncomplete="PF('dlg2').show()"
+							icon="ui-icon-pencil" title="Editar">
+							<f:setPropertyActionListener value="#{servidor}"
+								target="#{servidorControl.servidor}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+
+
+			</p:fieldset>
+		</h:form>
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Altera Servidor" widgetVar="dlg2" width="800">
+			<h:form id="dialog">
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Cpf:" />
+					<p:inputMask value="#{servidorControl.servidor.cpf}"
+						style="width:100px" mask="999.999.999-99" required="true"
+						requiredMessage="O campo cpf é necessário" />
+
+					<p:outputLabel value="Nome:" />
+					<p:inputText value="#{servidorControl.servidor.nome}"
+						styleClass="inputs" required="true"
+						requiredMessage="O campo nome é necessário" />
+
+					<p:outputLabel value="Matricula:" />
+					<p:inputMask value="#{servidorControl.servidor.matricula}"
+						styleClass="inputs" mask="9999999" style="width:100px" />
+
+				</h:panelGrid>
+				<p:separator />
+				<p:commandButton value="Salvar" action="#{servidorControl.altera}"
+					update=":formTabela, dialog,:form:growl" oncomplete="PF('dlg2').hide()"
+					icon="ui-icon-disk" />
+
+
+			</h:form>
+		</p:dialog>
+	</ui:define>
+
+
+
+
+</ui:composition>
+</html>

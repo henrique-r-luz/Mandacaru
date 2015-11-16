@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+	<h:panelGrid columns="2">
+		<p:outputLabel value="Nome:" />
+		<h:panelGroup>
+			<p:inputText style="width: 280px;"
+				value="#{grupoImpressaoControl.grupo.nome}"
+				requiredMessage="O Nome é necessário" />
+			<p:outputLabel value="Data:"
+				style="margin-left:10px;margin-right:5px;" />
+			<p:calendar required="true" id="data"
+				requiredMessage="O campo data  é obrigatorio" pattern="dd/MM/yyyy"
+				locale="pt_BR"
+				value="#{grupoImpressaoControl.grupo.dataAtualizacao}"
+				styleClass="caledario" />
+		</h:panelGroup>
+		<p:outputLabel value="Quota:" />
+		<h:panelGroup>
+			<p:inputText style="width: 113px;"
+				value="#{grupoImpressaoControl.grupo.quantidade}"
+				requiredMessage="O valor da quota é necessário" />
+
+			<p:outputLabel style="margin-left:10px;margin-right:5px;"
+				value="Validade em dias da quota:" />
+			<p:inputText style="width: 113px;"
+				value="#{grupoImpressaoControl.grupo.validadeEmDias}"
+				requiredMessage="Validade da quota é necessário" />
+		</h:panelGroup>
+
+		<p:outputLabel value="Descrição:" />
+		<p:editor value="#{grupoImpressaoControl.grupo.descricao}" id="editor"
+			width="400" required="true"
+			requiredMessage="O campo descrição é necessário" />
+	</h:panelGrid>
+	<p:separator />
+
+
+
+</ui:component>
+</html>

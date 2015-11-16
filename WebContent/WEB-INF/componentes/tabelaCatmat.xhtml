@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+	<p:dataTable var="item" value="#{lista}"
+		emptyMessage="não existe registros"
+		selection="#{controla.selectedItens}"
+		 paginator="true" rows="10">
+		<ui:insert name="cabeca"></ui:insert>
+		<f:facet name="header">
+
+		</f:facet>
+		<ui:insert name="inicio"></ui:insert>
+		<p:column headerText="Id" filterBy="#{item.id}"
+			filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.id} 
+			</p:column>
+
+		<p:column id="numero" headerText="Número" filterBy="#{item.numero}"
+			filterMatchMode="contains" style="white-space:normal !important;">
+				#{item.numero}
+			</p:column>
+		<p:column id="nome" headerText="Nome do material"
+			filterBy="#{item.material.nome}" filterMatchMode="contains"
+			style="white-space:normal !important;">
+				#{item.material.nome}
+			</p:column>
+			
+			<p:column id="tipo" headerText="Tipo Catmat"
+			filterBy="#{item.material.nome}" filterMatchMode="contains"
+			style="white-space:normal !important;">
+				#{item.tipocatmat.nome}
+			</p:column>
+
+		<p:column id="descricao" headerText="Descrição"
+			filterBy="#{item.material.descricao}" filterMatchMode="contains"
+			style="white-space:normal !important;">
+			<h:outputText id="display" value="#{item.material.descricao}" escape="false" />
+
+		</p:column>
+		<ui:insert name="final"></ui:insert>
+
+	</p:dataTable>
+
+</ui:component>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="../_main.xhtml">
+	<ui:define name="centro">
+		<h:form id="form">
+			<p:fieldset legend="Cadastra Cotação de Copias" toggleable="true"
+				id="painel" toggleSpeed="500">
+				<center>
+					<p:growl id="growl" closable="true" />
+					<h:panelGrid columns="6">
+
+
+						<p:outputLabel value="Valor Cotacao:" />
+						<pe:inputNumber value="#{cotacaoCopiasControl.cotacao.valor}"
+							style="width:100px" decimalSeparator="," thousandSeparator="."
+							required="true" requiredMessage="O campo valor é necessário">
+
+						</pe:inputNumber>
+
+
+						<p:outputLabel value="Data Inicial " />
+						<p:calendar required="true"
+							requiredMessage="O campo data Inicial é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{cotacaoCopiasControl.cotacao.dataInicial}"
+							styleClass="caledario" />
+
+						<p:outputLabel value="Data Final " />
+						<p:calendar required="true"
+							requiredMessage="O campo data Final  é obrigatorio"
+							pattern="dd/MM/yyyy" locale="pt_BR"
+							value="#{cotacaoCopiasControl.cotacao.dataFinal}"
+							styleClass="caledario" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton value="Salvar"
+						action="#{cotacaoCopiasControl.salva}" icon="ui-icon-disk"
+						update="form,:tabela:lista" />
+					<p:commandButton value="Cancelar"
+						icon="ui-icon-arrowreturnthick-1-w"
+						actionListener="#{cotacaoCopiasControl.clear}" update="form" />
+				</center>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<br />
+
+		<p:fieldset legend="Pesquisa Cotação Copias" toggleable="true"
+			toggleSpeed="500">
+			<h:form id="tabela">
+
+				<p:panel header="Filtro">
+					<center>
+						<h:panelGrid columns="5">
+							<h:panelGroup style="margin-right: 10px">
+
+							</h:panelGroup>
+							<h:panelGroup style="margin-right: 10px">
+								<h:outputText value="Data Inicial: " />
+								<p:calendar pattern="dd/MM/yyyy" locale="pt_BR"
+									value="#{cotacaoCopiasControl.dataInicial}"
+									styleClass="caledario" />
+
+
+
+							</h:panelGroup>
+							<h:panelGroup style="margin-right: 10px">
+								<h:outputText value="Data Final: " />
+								<p:calendar pattern="dd/MM/yyyy" locale="pt_BR"
+									value="#{cotacaoCopiasControl.dataFinal}"
+									styleClass="caledario" />
+
+							</h:panelGroup>
+							<p:commandButton value="Pesquisa"
+								actionListener="#{cotacaoCopiasControl.pesquisa}"
+								update="tabela,:form:growl" />
+						</h:panelGrid>
+					</center>
+				</p:panel>
+				<br />
+				<p:dataTable id="lista" var="copias"
+					value="#{cotacaoCopiasControl.listaCotacao}"
+					emptyMessage="não existe registros" paginator="true" rows="10">
+
+
+					<p:column headerText="Valor"
+						style="white-space:normal !important; width:80px;">
+				#{copias.valor} R$
+			</p:column>
+
+
+
+					<p:column headerText="Data Inicial"
+						style="white-space:normal !important; width:80px;">
+						<h:outputLabel value="#{copias.dataInicial}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+
+						</h:outputLabel>
+
+
+					</p:column>
+
+
+
+					<p:column headerText="Data Final"
+						style="white-space:normal !important; width:80px;">
+						<h:outputLabel value="#{copias.dataFinal}">
+
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+						</h:outputLabel>
+
+
+					</p:column>
+
+					<p:column id="opcoes" headerText="Opçoes" style="width:5%">
+						<p:commandButton update=":dialog" oncomplete="PF('dlg2').show()"
+							icon="ui-icon-pencil" title="Editar">
+							<f:setPropertyActionListener value="#{copias}"
+								target="#{cotacaoCopiasControl.cotacao}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
+
+
+		<p:dialog id="modalDialog" modal="true" appendToBody="true"
+			header="Selecione Catmat" widgetVar="dlg2" width="800">
+			<h:form id="dialog">
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Valor Cotacao:" />
+					<pe:inputNumber value="#{cotacaoCopiasControl.cotacao.valor}"
+						style="width:100px" decimalSeparator="," thousandSeparator="."
+						required="true" requiredMessage="O campo valor é necessário">
+
+					</pe:inputNumber>
+
+
+					<p:outputLabel value="Data Inicial " />
+					<p:calendar required="true"
+						requiredMessage="O campo data Inicial é obrigatorio"
+						pattern="dd/MM/yyyy" locale="pt_BR"
+						value="#{cotacaoCopiasControl.cotacao.dataInicial}"
+						styleClass="caledario" />
+
+					<p:outputLabel value="Data Final " />
+					<p:calendar required="true"
+						requiredMessage="O campo data Final  é obrigatorio"
+						pattern="dd/MM/yyyy" locale="pt_BR"
+						value="#{cotacaoCopiasControl.cotacao.dataFinal}"
+						styleClass="caledario" />
+				</h:panelGrid>
+				<p:separator />
+				<p:commandButton value="Salvar"
+					action="#{cotacaoCopiasControl.altera}" update=":form:growl,:tabela:lista"
+					oncomplete="PF('dlg2').hide()" icon="ui-icon-disk" />
+
+
+			</h:form>
+		</p:dialog>
+	</ui:define>
+
+
+
+
+</ui:composition>
+</html>

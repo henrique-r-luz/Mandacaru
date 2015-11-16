@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+
+	<h:panelGrid columns="2" id="painelLdap"  >
+
+		<p:outputLabel value="Servidor:" />
+		<p:inputText  value="#{ldapControl.ldap.servidor}" styleClass="inputs"
+			required="true" requiredMessage="endereço do servidor é necessário" />
+
+
+		<p:outputLabel value="Porta:" />
+		<p:inputText style="width: 80px;" value="#{ldapControl.ldap.porta}" styleClass="inputs"
+			required="true" requiredMessage="Número da porta é necessário" />
+
+		<p:outputLabel value="Usuário(CN):" />
+		<p:inputText value="#{ldapControl.ldap.cn}" type="text" autocomplete="off" id ="cn" styleClass="inputs"
+			required="true" requiredMessage="O usuório é necessário" />
+        <p:outputLabel value="Localização do OU no LDAP:" />
+		<p:inputText value="#{ldapControl.ldap.ouLogin}" type="text"  id ="ou-login" styleClass="inputs"
+			required="true" requiredMessage="O OU do usuário é necessário" />
+        
+		<p:outputLabel value="Senha do servidor:" />
+		<p:password value="#{ldapControl.ldap.senha}"    autocomplete="off"    id="senhaLdap" styleClass="inputs"
+			required="true" requiredMessage="A senha é necessário"  />
+	</h:panelGrid>
+	<p:separator />
+
+
+
+</ui:component>
+</html>
