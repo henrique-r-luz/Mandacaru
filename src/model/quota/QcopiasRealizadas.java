@@ -15,12 +15,12 @@ import model.impressao.Iservidor;
 
 
 @Entity
-public class QcopiasRealizadas implements Serializable {
+public class QcopiasRealizadas  {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	
 	
 	

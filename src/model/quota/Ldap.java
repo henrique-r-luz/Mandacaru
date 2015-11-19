@@ -17,10 +17,21 @@ public class Ldap implements Serializable {
 	@GeneratedValue
 	private int id;
 	private String servidor;
+	private String testeConexao;
     private int porta;
     private String cn = "";
     private String senha = "";
     private String ouLogin = "";
+    
+    
+    
+    
+	public String getTesteConexao() {
+		return testeConexao;
+	}
+	public void setTesteConexao(String testeConexao) {
+		this.testeConexao = testeConexao;
+	}
 	public int getId() {
 		return id;
 	}

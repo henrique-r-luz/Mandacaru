@@ -41,18 +41,21 @@ import dao.quota.RelatorioCopias;
 
 @ManagedBean
 @ViewScoped
-public class Quota implements Serializable {
+public class Quota {
 
 	/**
 	 * 
 	 */
+	
+	
+	private static final long serialVersionUID = 1L;
 
 	private UploadedFile file;
 	private QcopiasRealizadas copias = new QcopiasRealizadas();
 	private Config config = new Config();
 	private String nomeBd = "";
 	private String tipo = "";
-	private static final long serialVersionUID = 1L;
+
 	private RuncomdLinux conexCups;
 	private String verificaNumeroPaginas = "0";
 	private List<Qimpressora> impressora = new ArrayList<Qimpressora>();

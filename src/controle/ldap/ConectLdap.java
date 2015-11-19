@@ -28,6 +28,18 @@ public class ConectLdap implements Serializable {
 	private String usuario;
 	private String senha;
 	private String ou;
+	private String testeConexao;
+
+	
+	
+	
+	public String getTesteConexao() {
+		return testeConexao;
+	}
+
+	public void setTesteConexao(String testeConexao) {
+		this.testeConexao = testeConexao;
+	}
 
 	public String getLdapSenha() {
 		return ldapSenha;
@@ -96,6 +108,7 @@ public class ConectLdap implements Serializable {
 			cn = ldapBd.getLdap().getCn();
 			ldapSenha = ldapBd.getLdap().getSenha();
 			ou = ldapBd.getLdap().getOuLogin();
+			testeConexao = ldapBd.getLdap().getTesteConexao();
 		}
 
 	}
@@ -117,7 +130,7 @@ public class ConectLdap implements Serializable {
 			try {
 				conn.connect(this.servidor, this.porta);
 				conn.bind(LDAPConnection.LDAP_V3, this.cn, this.ldapSenha.getBytes());
-				 LDAPSearchResults search = conn.search(this.ou,
+				 LDAPSearchResults search = conn.search( this.testeConexao,
 							LDAPConnection.SCOPE_SUB,null, null, false);
 
 			      while(search.hasMore()){
@@ -175,7 +188,8 @@ public class ConectLdap implements Serializable {
 					+ ","+this.ou, this.senha.getBytes());
 			try {
 				LDAPSearchResults search = conn.search(
-						this.ou,
+						"uid=" + this.usuario
+						+ ","+this.ou,
 						LDAPConnection.SCOPE_SUB, "(uid = " + this.usuario
 								+ ")", null, false);
 
