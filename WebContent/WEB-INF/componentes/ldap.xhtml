@@ -9,27 +9,34 @@
 <ui:component>
 
 
-	<h:panelGrid columns="2" id="painelLdap"  >
+	<h:panelGrid columns="2" id="painelLdap">
 
 		<p:outputLabel value="Servidor:" />
-		<p:inputText  value="#{ldapControl.ldap.servidor}" styleClass="inputs"
+		<p:inputText value="#{ldapControl.ldap.servidor}" styleClass="inputs"
 			required="true" requiredMessage="endereço do servidor é necessário" />
 
 
 		<p:outputLabel value="Porta:" />
-		<p:inputText style="width: 80px;" value="#{ldapControl.ldap.porta}" styleClass="inputs"
-			required="true" requiredMessage="Número da porta é necessário" />
+		<p:inputText style="width: 80px;" value="#{ldapControl.ldap.porta}"
+			styleClass="inputs" required="true"
+			requiredMessage="Número da porta é necessário" />
 
 		<p:outputLabel value="Usuário(CN):" />
-		<p:inputText value="#{ldapControl.ldap.cn}" type="text" autocomplete="off" id ="cn" styleClass="inputs"
-			required="true" requiredMessage="O usuório é necessário" />
-        <p:outputLabel value="Localização do OU no LDAP:" />
-		<p:inputText value="#{ldapControl.ldap.ouLogin}" type="text"  id ="ou-login" styleClass="inputs"
-			required="true" requiredMessage="O OU do usuário é necessário" />
-        
+		<p:inputText value="#{ldapControl.ldap.cn}" type="text"
+			autocomplete="off" id="cn" styleClass="inputs" required="true"
+			requiredMessage="Usuário do LDAP é necessário" />
+	   <p:outputLabel value="Teste de Conexão:" />
+		<p:inputText value="#{ldapControl.ldap.testeConexao}" type="text"
+			autocomplete="off" styleClass="inputs" />
+		<p:outputLabel value="Localização do OU no LDAP:" />
+		<p:inputText value="#{ldapControl.ldap.ouLogin}" type="text"
+			id="ou-login" styleClass="inputs" required="true"
+			requiredMessage="O OU do usuário é necessário" />
+
 		<p:outputLabel value="Senha do servidor:" />
-		<p:password value="#{ldapControl.ldap.senha}"    autocomplete="off"    id="senhaLdap" styleClass="inputs"
-			required="true" requiredMessage="A senha é necessário"  />
+		<p:password value="#{ldapControl.ldap.senha}" autocomplete="off"
+			id="senhaLdap" styleClass="inputs" required="true"
+			requiredMessage="A senha é necessário" />
 	</h:panelGrid>
 	<p:separator />
 
