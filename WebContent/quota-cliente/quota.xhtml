@@ -197,7 +197,7 @@
 						value="#{quota.copiasImpressao}"></p:outputLabel>
 					<br />
 
-					<h:panelGrid columns="8">
+					<h:panelGrid columns="10">
 						<p:outputLabel value="Impressora:" />
 						<p:selectOneMenu id="impressora" style="width:150px"
 							value="#{quota.cotaImpressora}" effect="fade" filter="true"
@@ -217,6 +217,8 @@
 						</p:inputText>
 						<h:outputText value="Paisagem: " />
 						<p:selectBooleanCheckbox value="#{quota.paisagem}" />
+						<h:outputText value="Frente e Verso: " />
+						<p:selectBooleanCheckbox value="#{quota.frenteVerso}" />
 					</h:panelGrid>
 				</p:fieldset>
 

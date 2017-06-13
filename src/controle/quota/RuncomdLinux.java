@@ -31,14 +31,17 @@ public class RuncomdLinux implements Serializable {
 		}
 	}
 
-	@SuppressWarnings("resource")
 	public boolean executeImpressao(String url, int NumeroCopias, String range,
-			String impressora, String nome, boolean paisagem) {
-
+			String impressora, String nome, boolean paisagem, boolean frenteVerso) {
+		
 		// converte pdf
 		// unoconv -f pdf ques.odt
 		String resp = "";
 		String aux = "";
+		
+		String sideTwo = "";
+		String side = "";
+		
 		int cont = 0;
 		int cont2 = 0;
 		
@@ -52,10 +55,27 @@ public class RuncomdLinux implements Serializable {
 			} else {
 				str = "portrait";
 			}
-            
-			 run.exec("lpr -o " + str + " -#" + NumeroCopias
-					+ " -U " + nome + " -P " + impressora + "  -o page-ranges="
-					+ range + " " + url);
+			
+			if (frenteVerso)
+				side = "two-sided-long-edge";
+			
+			/*
+			 orientacao (landscape/portrait),
+			 quantidade cópias (#),
+			 usuario
+			 impressora
+			 page-ranges
+			 arquivo
+			*/ 
+			
+//			String commandTemplate = "lpr -U usuariop -P prt-proto-01 -#1 -o page-ranges=1-2 -o landscape -o sides=one-sided";
+			String commandTemplate = "lpr -U %s       -P %s           -#%s -o page-ranges=%s -o %s        -o sides=%s %s";
+			String command = String.format(commandTemplate, nome, impressora, NumeroCopias, range, str, side, url);
+			
+//			 run.exec("lpr -o " + str + " -#" + NumeroCopias
+//					+ " -U " + nome + " -P " + impressora + "  -o page-ranges="
+//					+ range + " " + url);
+			 run.exec(command);
 			//Scanner scanner = new Scanner(p.getInputStream());
 			// erro = scanner.useDelimiter("$$").next();
 			// shell.executeCommand("ifconfig");
@@ -78,7 +98,7 @@ public class RuncomdLinux implements Serializable {
 				 resp = scanner.useDelimiter("$$").next();
 				 //executa se o comando não possui resposta
 				}catch (NoSuchElementException e) {
-				    
+				    e.printStackTrace();
 					
 				}
 				// cont2++;
@@ -103,6 +123,17 @@ public class RuncomdLinux implements Serializable {
 		// Leia mais em: Executando Shell Scripts utilizando Java
 		// http://www.devmedia.com.br/executando-shell-scripts-utilizando-java/26494#ixzz2tlsscBUe
 
+	}
+	
+	public boolean executeImpressao(String url, int NumeroCopias, String range,
+			String impressora, String nome, boolean paisagem) {
+		
+		
+		//sides=two-sided-long-edge
+		
+		
+		return executeImpressao(url, NumeroCopias, range, impressora, nome, paisagem, false);
+		
 	}
 
 	public String verificaImpressora(String impressora)  {

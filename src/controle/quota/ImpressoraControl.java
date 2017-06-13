@@ -67,7 +67,8 @@ public class ImpressoraControl implements Serializable{
 	
 	
 	public List<Qimpressora> getListaTodos(){
-		return new DAO<Qimpressora>(Qimpressora.class).listaTodos();
+		List<Qimpressora> impressoras = new DAO<Qimpressora>(Qimpressora.class).listaTodos();
+		return impressoras;
 	}
 	
 	

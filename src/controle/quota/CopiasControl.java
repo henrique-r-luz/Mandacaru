@@ -119,7 +119,7 @@ public class CopiasControl implements Serializable {
 
 	public String returnDoc(String str) {
 		Config conf = new Config();
-
+		String urlDoc = conf.getUrlBase() + "/docImpressao/" + str + ".pdf";
 		return conf.getUrlBase() + "/docImpressao/" + str + ".pdf";
 	}
 

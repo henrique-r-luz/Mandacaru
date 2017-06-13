@@ -22,6 +22,7 @@ import model.quota.QcopiasRealizadas;
 import model.quota.QgrupoImpressao;
 import model.quota.Qimpressora;
 
+import org.apache.poi.util.IOUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -67,6 +68,7 @@ public class Quota {
 	private Qimpressora cotaImpressora = new Qimpressora();
 	private int pagina = 0;
 	private boolean paisagem = false;
+	private boolean frenteVerso = false;
 
 	/*
 	 * public void imprime(){
@@ -259,19 +261,23 @@ public class Quota {
 
 	public void salvarDoc() {
 
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		FacesMessage msg = new FacesMessage();
-		// String[] tipo = new
-		copias.setNomeDocumento(file.getFileName());
-		String[] exts = file.getFileName().split("\\.");
+		try {
+			FacesContext ctx = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage();
+			// String[] tipo = new
+			copias.setNomeDocumento(file.getFileName());
+			String[] exts = file.getFileName().split("\\.");
 
-		byte[] conteudo = file.getContents(); // Conteudo a ser gravado no
-		tipo = "." + exts[exts.length - 1].toLowerCase();
-		nomeBd = new GeraNomeImg().getNomeDoc("");
+			byte[] conteudo = IOUtils.toByteArray(file.getInputstream());// Conteudo a ser gravado no
+			tipo = "." + exts[exts.length - 1].toLowerCase();
+			nomeBd = new GeraNomeImg().getNomeDoc("");
 
-		File fileCaminho = new File(config.getUrl() + config.getDocImpressao() + nomeBd + tipo);
+			File fileCaminho = new File(config.getUrl() + config.getDocImpressao() + nomeBd + tipo);
 
-		salvaArquivo(fileCaminho, conteudo, msg, ctx, tipo);
+			salvaArquivo(fileCaminho, conteudo, msg, ctx, tipo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -413,7 +419,7 @@ public class Quota {
 									if (conexCups.executeImpressao(
 											config.getUrl() + config.getDocImpressao() + nomeBd + ".pdf",
 											this.getLoopCopias(), this.getVerificaNumeroPaginas(),
-											copias.getImpressora().getNome(), nomeBd, paisagem)) {
+											copias.getImpressora().getNome(), nomeBd, paisagem, frenteVerso)) {
 
 										salvaCopias(nomeBd, calculaCopias(this.getLoopCopias(), pagina));
 										cancela();
@@ -600,6 +606,14 @@ public class Quota {
 
 		dao = new DAOatualizaQuota();
 		dao.atualiza();
+	}
+
+	public boolean isFrenteVerso() {
+		return frenteVerso;
+	}
+
+	public void setFrenteVerso(boolean frenteVerso) {
+		this.frenteVerso = frenteVerso;
 	}
 
 }

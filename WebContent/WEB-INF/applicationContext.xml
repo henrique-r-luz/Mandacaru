@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.0.xsd">
-	<http auto-config="true" use-expressions="true">
-		<session-management invalid-session-url="/login.jsf" />
-		<form-login login-page="/login.jsf"
-			authentication-failure-url="/login.jsf?error=true" />
+	<http auto-config="true" use-expressions="true" >
+	  	<session-management invalid-session-url="/login.jsf"  />
+	  	<form-login login-page="/login.jsf" authentication-failure-url="/login.jsf?error=true" default-target-url="/init/index.jsf" always-use-default-target="true" />
 		<intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN')" />
-		<intercept-url access="isAuthenticated()" pattern="/init/**" />
-		<intercept-url access="isAuthenticated()" pattern="/_main.xhtml" />
+		<intercept-url pattern="/init/**" access="isAuthenticated()" />
 		<intercept-url pattern="/pedidos/**" access="hasAnyRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/docImpressao/**" access="hasAnyRole('ROLE_ADMIN','ROLE_QUOTA_CLIENTE','ROLE_QUOTA')" />
 		<intercept-url pattern="/cadastroItens/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/processo/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/impressao/**"
-			access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN')" />
-		<intercept-url pattern="/pessoa/**"
-			access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA')" />
-		<intercept-url pattern="/quota/**"
-			access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA')" />
-		<intercept-url pattern="/quota-cliente/**"
-			access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA','ROLE_QUOTA_CLIENTE')" />
-
-		<intercept-url pattern="/docImpressao/**"
-			access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA','ROLE_QUOTA_CLIENTE')" />
-		<logout invalidate-session="true" logout-success-url="/init/index.jsf" />
-		<form-login authentication-failure-url="/erro.jsf"
-			login-page="/login.jsf" />
+		<intercept-url pattern="/impressao/**" access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN')" />
+		<intercept-url pattern="/pessoa/**" access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA')" />
+		<intercept-url pattern="/quota/**" access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA')" />
+		<intercept-url pattern="/quota-cliente/**" access="hasAnyRole('ROLE_COPIA','ROLE_ADMIN','ROLE_QUOTA','ROLE_QUOTA_CLIENTE')" />
+		<logout invalidate-session="true"  logout-success-url="/init/index.jsf" />  
+	   <form-login authentication-failure-url="/erro.jsf" login-page="/login.jsf"/>
 	</http>
-
-
+	
+	
+	
+ 
+	
+	<beans:bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="url"
+			value="jdbc:mysql://localhost:3306/ifbabru_impressao" />
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="username" value="ifba" />
+		<beans:property name="password" value="brudevel" />
+	</beans:bean>
+	
+	
 	<authentication-manager>
-            <authentication-provider ref="customAuthenticationProvider" >
-            </authentication-provider>
-    </authentication-manager>
-
-    <beans:bean id="customAuthenticationProvider" class="seguranca.CustomAuthenticationProvider"/>
-
-
-
-
-
+		<authentication-provider>
+			<password-encoder hash="md5" />
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="SELECT login, senha, 'true' as enable FROM Cusuario WHERE login=?"
+				authorities-by-username-query="SELECT login, Cgrupo.nome FROM Cusuario,Cgrupo WHERE Cusuario.grupo_id=Cgrupo.id and Cusuario.status_id=1 and login=?" />
+		</authentication-provider>
+	</authentication-manager>
 </beans:beans>
